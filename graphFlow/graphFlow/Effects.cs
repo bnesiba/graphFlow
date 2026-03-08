@@ -71,9 +71,37 @@ namespace graphFlow
             return Actions.NodeExecuted(result);
         }
 
-        public FlowActionBase OnNodeExecuted_EvaluateEdges_ResolveNodeComplete(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
+        public FlowActionBase OnNodeExecuted_EvaluateEdges_ResolveNodeSubTreeComplete(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
         {
-            return default;
+            var subtreeCompleteAction = Actions.NodeSubtreeComplete(nodeExecutedAction.Parameters);
+
+            //If node failed, don't run edges/futher nodes
+            if (!nodeExecutedAction.Parameters.success)
+            {
+                return subtreeCompleteAction;
+            }
+
+            var nodeCompleted = nodeExecutedAction.Parameters.nodeExecuted;
+            //evaluate edges
+            var edgesToEvaluate = nodeCompleted.edges;
+            try
+            {
+                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetStateData);
+                foreach (var edge in edgesToEvaluate)
+                {
+                    if (edge.evaluation(stateData.stateObject))
+                    {
+                        _flowActionHandler.ResolveAction(Actions.NodeExecution(edge.targetNode));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //probably do somthing, right?
+                Console.WriteLine(e);
+            }
+            //run nodes that should be run
+            return subtreeCompleteAction;
         }
 
     }
