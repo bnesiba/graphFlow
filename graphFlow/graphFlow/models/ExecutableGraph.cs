@@ -50,4 +50,10 @@ namespace graphFlow.models
         }
     }
 
+    //public class ExecutableGraphResult
+    //{
+    //    public ExecutableGraphBase graph {  get; set; }
+    //    public bool success { get; set; }
+    //}
+
 }

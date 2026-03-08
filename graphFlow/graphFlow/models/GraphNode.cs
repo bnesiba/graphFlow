@@ -37,6 +37,6 @@ namespace graphFlow.models
 
     public abstract class GraphNodeResultBase
     {
-
+        public bool success { get; set; }
     }
 }
