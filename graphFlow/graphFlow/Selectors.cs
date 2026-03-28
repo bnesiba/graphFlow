@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace graphFlow
 {
     //TODO: maybe selectors don't need to exist?
-    public class Selectors<T>
+    public static class Selectors<T>
     {
-        public static FlowDataSelector<GraphState<T>, GraphState<T>> GetStateData = new FlowDataSelector<GraphState<T>, GraphState<T>>(GetState);
+        public static FlowDataSelector<T, T> GetStateData = new FlowDataSelector<T, T>(GetState);
 
         private static T GetState<T>(T state)
         {

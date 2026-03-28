@@ -15,9 +15,14 @@ namespace graphFlow
         };
 
         //Reducer Methods
+        public GraphState<T> nodesAndEdgesRun_OnNodeExecute_AddNodesAndEdgesRun(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphState<T> currentState)
+        {
+            currentState.nodesAndEdgesRun.Add($"{nodeExecutedAction.Parameters.nodeExecuted.name}");
+            return currentState;
+        }
         public GraphState<T> nodesAndEdgesRun_OnNodeComplete_AddNodesAndEdgesRun(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphState<T> currentState)
         {
-            currentState.nodesAndEdgesRun.Add(nodeExecutedAction.Parameters.nodeExecuted.name);
+            currentState.nodesAndEdgesRun.Add($"{nodeExecutedAction.Parameters.nodeExecuted.name}");
             return currentState;
         }
         public GraphState<T> nodesAndEdgesRun_OnEdgeEvaluation_AddNodesAndEdgesRun(FlowAction<GraphEdge<T>> edgeEvaluatedAction, GraphState<T> currentState)
