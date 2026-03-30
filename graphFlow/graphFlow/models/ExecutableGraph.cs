@@ -5,12 +5,12 @@ namespace graphFlow.models
     public class ExecutableGraph<T> : ExecutableGraphBase
     {
         private FlowState _flowState;
-        private FlowStateData<GraphState<T>> _flowStateData;
+        private FlowStateData<T> _flowStateData;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T> startNode { get; set; }
 
-        public ExecutableGraph(FlowState flowState, FlowStateData<GraphState<T>> flowStateData)
+        public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData):base()
         {
             _flowState = flowState;
             _flowStateData = flowStateData;
@@ -23,12 +23,13 @@ namespace graphFlow.models
             //return state
 
             _flowState.ResolveAction(Actions.GraphExecution(this));
-            T currentState = _flowStateData.CurrentState(Selectors<T>.GetStateData);
+            T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
             return currentState;
         }
 
     }
 
+    //TODO: verify this even works vv
     public class ExecutableGraph : ExecutableGraphBase
     {
         private FlowState _flowState;
@@ -45,7 +46,7 @@ namespace graphFlow.models
 
     public abstract class ExecutableGraphBase
     {
-        public required Guid id { get; init; }
+        public Guid? id { get; set; }
 
         public ExecutableGraphBase()
         {

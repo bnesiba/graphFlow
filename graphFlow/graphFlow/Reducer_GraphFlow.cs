@@ -3,7 +3,7 @@ using graphFlow.models;
 
 namespace graphFlow
 {
-    public class Reducer<T> : IFlowStateReducer<GraphState<T>>
+    public class GraphFlowReducer<T> : IFlowStateReducer<GraphState<T>>
     {
         public GraphState<T> InitialState => new GraphState<T>();
 

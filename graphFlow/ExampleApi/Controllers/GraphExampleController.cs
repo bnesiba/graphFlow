@@ -11,6 +11,7 @@ namespace ExampleApi.Controllers
         [HttpGet]
         public virtual IActionResult RunTest()
         {
+
             return StatusCode(200, "success");
         }
     }

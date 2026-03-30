@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace graphFlow
 {
     //TODO: maybe selectors don't need to exist?
-    public static class Selectors<T>
+    public static class GraphFlowSelectors<T>
     {
         public static FlowDataSelector<GraphState<T>, T> GetStateData = new FlowDataSelector<GraphState<T>, T>(GetStateObject);
 

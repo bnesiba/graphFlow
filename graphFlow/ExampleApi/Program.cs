@@ -21,8 +21,9 @@ namespace ExampleApi
 
             //TODO: flow config goes here
             builder.Services.UseFlowState();
-            builder.Services.UseEffects<Effects<ExampleGraphStateObject>>();
-            builder.Services.UseReducer<Reducer<ExampleGraphStateObject>, GraphState<ExampleGraphStateObject>>();
+            builder.Services.UseEffects<GraphFlowEffects<ExampleGraphStateObject>>();
+            builder.Services.UseReducer<StateObjectReducer<ExampleGraphStateObject>, ExampleGraphStateObject>();
+            builder.Services.UseReducer<GraphFlowReducer<ExampleGraphStateObject>, GraphState<ExampleGraphStateObject>>();
 
 
 

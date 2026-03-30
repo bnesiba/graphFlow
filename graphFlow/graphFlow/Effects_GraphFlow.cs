@@ -4,12 +4,12 @@ using graphFlow.models;
 
 namespace graphFlow
 {
-    public class Effects<T> : IFlowStateEffects
+    public class GraphFlowEffects<T> : IFlowStateEffects
     {
-        private FlowStateData<GraphState<T>> _flowStateData;
+        private FlowStateData<T> _flowStateData;
         private FlowActionHandler _flowActionHandler;
 
-        public Effects(FlowActionHandler flowActionHandler, FlowStateData<GraphState<T>> stateData)
+        public GraphFlowEffects(FlowActionHandler flowActionHandler, FlowStateData<T> stateData)
         {
             _flowActionHandler = flowActionHandler;
             _flowStateData = stateData;
@@ -49,8 +49,8 @@ namespace graphFlow
             try
             {
                 //get state data
-                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetGraphState);
-                nodeResult = nodeToExecute.nodeFunction(stateData.stateObject);
+                T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
+                nodeResult = nodeToExecute.nodeFunction(stateData);
                 success = true;
             }
             catch (Exception e)
@@ -83,10 +83,10 @@ namespace graphFlow
             var edgesToEvaluate = nodeCompleted.edges;
             try
             {
-                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetGraphState);
+                T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
                 foreach (var edge in edgesToEvaluate)
                 {
-                    if (edge.evaluation(stateData.stateObject))
+                    if (edge.evaluation(stateData))
                     {
                         _flowActionHandler.ResolveAction(Actions.NodeExecution(edge.targetNode));
                     }
