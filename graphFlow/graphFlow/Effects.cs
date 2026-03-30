@@ -1,11 +1,6 @@
 ﻿using ActionFlow;
 using ActionFlow.Models;
 using graphFlow.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace graphFlow
 {
@@ -54,7 +49,7 @@ namespace graphFlow
             try
             {
                 //get state data
-                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetStateData);
+                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetGraphState);
                 nodeResult = nodeToExecute.nodeFunction(stateData.stateObject);
                 success = true;
             }
@@ -84,10 +79,11 @@ namespace graphFlow
 
             var nodeCompleted = nodeExecutedAction.Parameters.nodeExecuted;
             //evaluate edges
+            //TODO: break out into edge execution actions for better tracking.
             var edgesToEvaluate = nodeCompleted.edges;
             try
             {
-                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetStateData);
+                GraphState<T> stateData = _flowStateData.CurrentState(Selectors<T>.GetGraphState);
                 foreach (var edge in edgesToEvaluate)
                 {
                     if (edge.evaluation(stateData.stateObject))

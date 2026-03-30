@@ -5,12 +5,12 @@ namespace graphFlow.models
     public class ExecutableGraph<T> : ExecutableGraphBase
     {
         private FlowState _flowState;
-        private FlowStateData<T> _flowStateData;
+        private FlowStateData<GraphState<T>> _flowStateData;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T> startNode { get; set; }
 
-        public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData)
+        public ExecutableGraph(FlowState flowState, FlowStateData<GraphState<T>> flowStateData)
         {
             _flowState = flowState;
             _flowStateData = flowStateData;

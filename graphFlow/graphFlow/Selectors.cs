@@ -11,11 +11,18 @@ namespace graphFlow
     //TODO: maybe selectors don't need to exist?
     public static class Selectors<T>
     {
-        public static FlowDataSelector<T, T> GetStateData = new FlowDataSelector<T, T>(GetState);
+        public static FlowDataSelector<GraphState<T>, T> GetStateData = new FlowDataSelector<GraphState<T>, T>(GetStateObject);
+
+        public static FlowDataSelector<GraphState<T>, GraphState<T>> GetGraphState = new FlowDataSelector<GraphState<T>, GraphState<T>>(GetState);
 
         private static T GetState<T>(T state)
         {
             return state;
+        }
+
+        private static T GetStateObject<T>(GraphState<T> graphState)
+        {
+            return graphState.stateObject;
         }
     }
 }

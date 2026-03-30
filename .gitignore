@@ -6,3 +6,5 @@
 /graphFlow/.vs/
 /graphFlow/graphFlow/obj
 /graphFlow/ExampleApi/obj
+/graphFlow/ExampleApi/bin/
+/graphFlow/graphFlow/bin/
