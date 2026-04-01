@@ -19,7 +19,6 @@ namespace ExampleApi.Controllers
         public virtual IActionResult RunTest()
         {
             var graph = _flowGraph.GetFlowGraph();
-            //var output = graph.ExecuteGraph(ExampleGraphStateObject.DefaultStateGraphObject);
             var output = graph.ExecuteGraph();
             return StatusCode(200, output);
         }

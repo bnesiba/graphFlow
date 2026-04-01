@@ -23,7 +23,7 @@ namespace ExampleApi
             builder.Services.UseFlowState();
             builder.Services.UseEffects<GraphFlowEffects<ExampleGraphStateObject>>();
             builder.Services.UseReducer<StateObjectReducer<ExampleGraphStateObject>, ExampleGraphStateObject>();
-            //builder.Services.UseReducer<GraphFlowReducer<ExampleGraphStateObject>, GraphState<ExampleGraphStateObject>>();
+            builder.Services.UseReducer<GraphFlowReducer<ExampleGraphStateObject>, GraphState<ExampleGraphStateObject>>();
 
             //local flow config?
             builder.Services.AddScoped<FlowGraph>();
