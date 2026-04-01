@@ -8,17 +8,17 @@ namespace ExampleApi.Controllers
     [ApiController]
     public class GraphExampleController : ControllerBase
     {
-        private ExampleGraph _flowGraph;
+        private ExampleGraph _exampleGraph;
 
-        public GraphExampleController(ExampleGraph flowGraph)
+        public GraphExampleController(ExampleGraph exampleGraph)
         { 
-            _flowGraph = flowGraph;
+            _exampleGraph = exampleGraph;
         }
 
         [HttpGet]
         public virtual IActionResult RunTest()
         {
-            var graph = _flowGraph.GetGraph();
+            var graph = _exampleGraph.GetGraph();
             var output = graph.ExecuteGraph();
             return StatusCode(200, output);
         }
