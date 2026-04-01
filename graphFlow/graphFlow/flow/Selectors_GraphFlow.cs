@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     //TODO: maybe selectors don't need to exist?
     public static class GraphFlowSelectors<T>

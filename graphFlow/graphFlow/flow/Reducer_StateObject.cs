@@ -2,7 +2,7 @@
 using ActionFlow.Models;
 using graphFlow.models;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     public class StateObjectReducer<T> : IFlowStateReducer<T> where T : IDefaultValueHaver<T>
     {

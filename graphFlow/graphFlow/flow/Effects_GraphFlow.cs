@@ -2,7 +2,7 @@
 using ActionFlow.Models;
 using graphFlow.models;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     public class GraphFlowEffects<T> : IFlowStateEffects
     {
@@ -28,7 +28,7 @@ namespace graphFlow
             GraphNode<T> nodeToExecute = executeGraphAction.Parameters.startNode;
             try
             {
-                _flowActionHandler.ResolveAction(Actions.NodeExecution<T>(nodeToExecute));
+                _flowActionHandler.ResolveAction(Actions.NodeExecution(nodeToExecute));
                 success = true;
 
             }
@@ -38,7 +38,7 @@ namespace graphFlow
                 success = false;
             }
 
-            return Actions.GraphExecuted<T>(executeGraphAction.Parameters, success);
+            return Actions.GraphExecuted(executeGraphAction.Parameters, success);
         }
 
         public FlowActionBase OnNodeExecution_ExecuteNode_ResolveNodeExecuted(FlowAction<GraphNode<T>> executeNodeAction)

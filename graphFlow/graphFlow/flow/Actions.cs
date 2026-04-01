@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     //TODO: update action/effects implementation so that inputs can be non-nullable without breaking effects
     public static class Actions

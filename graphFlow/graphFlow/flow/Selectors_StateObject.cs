@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     //TODO: update actionflow to make selectors unnecessary?
     public static class StateObjectSelectors<T>

@@ -1,7 +1,7 @@
 ﻿using ActionFlow.Models;
 using graphFlow.models;
 
-namespace graphFlow
+namespace GraphFlow.flow
 {
     public class GraphFlowReducer<T> : IFlowStateReducer<GraphState<T>>
     {
