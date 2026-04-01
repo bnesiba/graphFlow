@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36930.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "graphFlow", "graphFlow\graphFlow.csproj", "{26D36833-B8FD-4AEF-8134-3FF43EB3DFBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphFlow", "graphFlow\GraphFlow.csproj", "{26D36833-B8FD-4AEF-8134-3FF43EB3DFBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApi", "ExampleApi\ExampleApi.csproj", "{865DA01B-3BA2-40ED-BFD8-6708103738BF}"
 EndProject
