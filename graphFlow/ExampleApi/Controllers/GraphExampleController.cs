@@ -21,7 +21,8 @@ namespace ExampleApi.Controllers
             var graph = _flowGraph.GetGraph();
             var output = graph.ExecuteGraph();
             return StatusCode(200, output);
-            // output object:
+
+            // (ExampleGraphState)
             //{
             //    "nodeOutputs": {
             //        "Node1": "Node1Run",
