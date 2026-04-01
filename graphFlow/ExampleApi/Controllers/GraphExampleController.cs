@@ -8,9 +8,9 @@ namespace ExampleApi.Controllers
     [ApiController]
     public class GraphExampleController : ControllerBase
     {
-        private FlowGraph _flowGraph;
+        private ExampleGraph _flowGraph;
 
-        public GraphExampleController(FlowGraph flowGraph)
+        public GraphExampleController(ExampleGraph flowGraph)
         { 
             _flowGraph = flowGraph;
         }

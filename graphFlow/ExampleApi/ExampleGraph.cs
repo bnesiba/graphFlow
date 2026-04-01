@@ -15,14 +15,16 @@ namespace ExampleApi
     //      v            v
     //   [Node3]      [Node4]
 
-    public class FlowGraph
+    public class ExampleGraph
     {
         private GraphBuilder<ExampleGraphStateObject> _graphBuilder;
 
-        public FlowGraph(GraphBuilder<ExampleGraphStateObject> graphBuilder)
+        public ExampleGraph(GraphBuilder<ExampleGraphStateObject> graphBuilder)
         {
             _graphBuilder = graphBuilder;
         }
+
+        //Define Graph
         public ExecutableGraph<ExampleGraphStateObject> GetFlowGraph()
         {
             ExecutableGraph<ExampleGraphStateObject> graph = _graphBuilder.GetExecutableGraph();
@@ -39,7 +41,7 @@ namespace ExampleApi
             return graph;
         }
 
-        //Nodes
+        //Node Functions
         public ExampleGraphStateObject Node1Function(ExampleGraphStateObject injectedState) 
         {
             injectedState.NodeOutputs.TryGetValue("Node1", out string? node1Value);
@@ -81,7 +83,7 @@ namespace ExampleApi
             return injectedState;
         }
 
-        //edges
+        //Edge Functions
         public bool ShouldWeDoTheThing(ExampleGraphStateObject injectedState)
         {
             return injectedState.ShouldDoTheThing;

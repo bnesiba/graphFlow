@@ -21,7 +21,7 @@ namespace ExampleApi
             builder.Services.UseGraphFlow<ExampleGraphStateObject>();
 
             //local flow config?
-            builder.Services.AddScoped<FlowGraph>();
+            builder.Services.AddScoped<ExampleGraph>();
 
 
 

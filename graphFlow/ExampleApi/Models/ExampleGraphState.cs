@@ -9,19 +9,6 @@ namespace ExampleApi.Models
         public int NodeCount { get; set; }
         public bool ShouldDoTheThing { get; set; }
 
-        //public static ExampleGraphStateObject DefaultStateGraphObject
-        //{
-        //    get
-        //    {
-        //        return new ExampleGraphStateObject
-        //        {
-        //            NodeCount = 0,
-        //            ShouldDoTheThing = false,
-        //            NodeOutputs = new Dictionary<string, string>()
-        //        };
-        //    }
-        //}
-
         public static ExampleGraphStateObject DefaultValue()
         {
             return new ExampleGraphStateObject
