@@ -1,11 +1,12 @@
-﻿using ActionFlow.Models;
+﻿using ActionFlow;
+using ActionFlow.Models;
 using graphFlow.models;
 
 namespace graphFlow
 {
-    public class StateObjectReducer<T> : IFlowStateReducer<T>
+    public class StateObjectReducer<T> : IFlowStateReducer<T> where T : IDefaultValueHaver<T>
     {
-        public T InitialState => default(T);
+        public T InitialState => T.DefaultValue();
 
         public List<IFlowReductionBase<T>> Reductions => new List<IFlowReductionBase<T>>
         {
@@ -20,5 +21,10 @@ namespace graphFlow
             currentState = stateObj;
             return currentState;
         }
+    }
+
+    public interface IDefaultValueHaver<T> where T : IDefaultValueHaver<T>
+    {
+        static abstract T DefaultValue();
     }
 }

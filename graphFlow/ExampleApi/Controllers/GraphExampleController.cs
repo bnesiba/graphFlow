@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ExampleApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleApi.Controllers
@@ -7,12 +8,20 @@ namespace ExampleApi.Controllers
     [ApiController]
     public class GraphExampleController : ControllerBase
     {
+        private FlowGraph _flowGraph;
+
+        public GraphExampleController(FlowGraph flowGraph)
+        { 
+            _flowGraph = flowGraph;
+        }
 
         [HttpGet]
         public virtual IActionResult RunTest()
         {
-
-            return StatusCode(200, "success");
+            var graph = _flowGraph.GetFlowGraph();
+            //var output = graph.ExecuteGraph(ExampleGraphStateObject.DefaultStateGraphObject);
+            var output = graph.ExecuteGraph();
+            return StatusCode(200, output);
         }
     }
 

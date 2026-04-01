@@ -11,6 +11,7 @@ namespace graphFlow
     //TODO: update action/effects implementation so that inputs can be non-nullable without breaking effects
     public static class Actions
     {
+        //public static FlowAction<T> InitializeFlowState<T>(T? initialState = default) => new FlowAction<T> { Name = "InitializeFlowState", Parameters = initialState };
         public static FlowAction<ExecutableGraph> GraphExecution(ExecutableGraph? graph = null) => new FlowAction<ExecutableGraph> { Name = "ExecuteGraphStateless", Parameters = graph };
         public static FlowAction<ExecutableGraph<T>> GraphExecution<T>(ExecutableGraph<T>? graph = null) => new FlowAction<ExecutableGraph<T>> { Name = "ExecuteGraph", Parameters = graph};
 
