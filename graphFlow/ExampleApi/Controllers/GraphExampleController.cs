@@ -18,7 +18,7 @@ namespace ExampleApi.Controllers
         [HttpGet]
         public virtual IActionResult RunTest()
         {
-            var graph = _flowGraph.GetFlowGraph();
+            var graph = _flowGraph.GetGraph();
             var output = graph.ExecuteGraph();
             return StatusCode(200, output);
         }

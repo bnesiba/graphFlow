@@ -25,7 +25,7 @@ namespace ExampleApi
         }
 
         //Define Graph
-        public ExecutableGraph<ExampleGraphStateObject> GetFlowGraph()
+        public ExecutableGraph<ExampleGraphStateObject> GetGraph()
         {
             ExecutableGraph<ExampleGraphStateObject> graph = _graphBuilder.GetExecutableGraph();
             graph.AddNode("Node1", Node1Function);
