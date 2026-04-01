@@ -15,6 +15,18 @@ namespace ExampleApi
     //      v            v
     //   [Node3]      [Node4]
 
+    //Final State:
+    // (ExampleGraphState)
+    //{
+    //    "nodeOutputs": {
+    //        "Node1": "Node1Run",
+    //        "Node2": "Node2DidTheThing",
+    //        "Node4": "Node4Reached"
+    //    },
+    //    "nodeCount": 3,
+    //    "shouldDoTheThing": true
+    //}
+
     public class ExampleGraph
     {
         private GraphBuilder<ExampleGraphStateObject> _graphBuilder;

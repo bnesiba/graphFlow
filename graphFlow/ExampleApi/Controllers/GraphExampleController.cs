@@ -21,17 +21,6 @@ namespace ExampleApi.Controllers
             var graph = _flowGraph.GetGraph();
             var output = graph.ExecuteGraph();
             return StatusCode(200, output);
-
-            // (ExampleGraphState)
-            //{
-            //    "nodeOutputs": {
-            //        "Node1": "Node1Run",
-            //        "Node2": "Node2DidTheThing",
-            //        "Node4": "Node4Reached"
-            //    },
-            //    "nodeCount": 3,
-            //    "shouldDoTheThing": true
-            //}
         }
     }
 
