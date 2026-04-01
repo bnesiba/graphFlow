@@ -1,8 +1,6 @@
 
-using ActionFlow;
 using ExampleApi.Models;
-using graphFlow;
-using graphFlow.models;
+using graphFlow.util;
 
 namespace ExampleApi
 {
@@ -19,11 +17,8 @@ namespace ExampleApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //TODO: flow config goes here
-            builder.Services.UseFlowState();
-            builder.Services.UseEffects<GraphFlowEffects<ExampleGraphStateObject>>();
-            builder.Services.UseReducer<StateObjectReducer<ExampleGraphStateObject>, ExampleGraphStateObject>();
-            builder.Services.UseReducer<GraphFlowReducer<ExampleGraphStateObject>, GraphState<ExampleGraphStateObject>>();
+            //flow config 
+            builder.Services.UseGraphFlow<ExampleGraphStateObject>();
 
             //local flow config?
             builder.Services.AddScoped<FlowGraph>();

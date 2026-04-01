@@ -1,6 +1,6 @@
-﻿using ActionFlow;
-using ExampleApi.Models;
+﻿using ExampleApi.Models;
 using graphFlow.models;
+using graphFlow.util;
 
 namespace ExampleApi
 {
@@ -17,18 +17,15 @@ namespace ExampleApi
 
     public class FlowGraph
     {
-        private FlowState _flowState;
-        private FlowStateData<ExampleGraphStateObject> _flowStateData;
+        private GraphBuilder<ExampleGraphStateObject> _graphBuilder;
 
-
-        public FlowGraph(FlowState flowState, FlowStateData<ExampleGraphStateObject> flowStateData)
+        public FlowGraph(GraphBuilder<ExampleGraphStateObject> graphBuilder)
         {
-            _flowState = flowState;
-            _flowStateData = flowStateData;
+            _graphBuilder = graphBuilder;
         }
         public ExecutableGraph<ExampleGraphStateObject> GetFlowGraph()
         {
-            ExecutableGraph<ExampleGraphStateObject> graph = new ExecutableGraph<ExampleGraphStateObject>(_flowState, _flowStateData);
+            ExecutableGraph<ExampleGraphStateObject> graph = _graphBuilder.GetExecutableGraph();
             graph.AddNode("Node1", Node1Function);
             graph.AddNode("Node2", Node2Function);
             graph.AddNode("Node3", Node3Function);
