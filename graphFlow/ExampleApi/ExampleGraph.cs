@@ -47,7 +47,7 @@ namespace ExampleApi
 
             graph.AddEdge("Node1", "Node2");
             graph.AddEdge("Node2", "Node3", ShouldNotDoTheThing);
-            graph.AddEdge("Node2", "Node4", ShouldWeDoTheThing);
+            graph.AddEdge("Node2", "Node4", ShouldDoTheThing);
 
             graph.SetStartNode("Node1");
             return graph;
@@ -96,7 +96,7 @@ namespace ExampleApi
         }
 
         //Edge Functions
-        public bool ShouldWeDoTheThing(ExampleGraphStateObject injectedState)
+        public bool ShouldDoTheThing(ExampleGraphStateObject injectedState)
         {
             return injectedState.ShouldDoTheThing;
         }
