@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>bcn.$(AssemblyName)</PackageId>
+    <Title>GraphFlow - a graph architecture for C# built on ActionFlow.</Title>
+    <Version>1.0.0</Version>
+    <Authors>Brandon Nesiba</Authors>
+    <Product>bcn.$(AssemblyName)</Product>
+    <Description>GraphFlow provides a typesafe, performant graph architecture for c# applications. 
+
+Built on ActionFlow, GraphFlow provides a framework for defining and executing graphs in a typesafe and extensible manner.</Description>
+    <Copyright>Copyright (c) 2026 Brandon Nesiba</Copyright>
+    <RepositoryType>https://github.com/bnesiba/graphFlow</RepositoryType>
+    <PackageTags>graph, ExecutableGraph, ActionFlow</PackageTags>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\license.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bcn.ActionFlow" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
