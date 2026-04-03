@@ -11,7 +11,8 @@ namespace GraphFlow.flow
         {
             this.reduce(nodesAndEdgesRun_OnNodeComplete_AddNodesAndEdgesRun, Actions.NodeExecuted<T>()),
             this.reduce(nodesAndEdgesRun_OnEdgeEvaluation_AddNodesAndEdgesRun, Actions.EdgeEvaluation<T>()),
-            this.reduce(StateObject_OnNodeComplete_UpdateStateObject, Actions.NodeExecuted<T>())
+            this.reduce(StateObject_OnNodeComplete_UpdateStateObject, Actions.NodeExecuted<T>()),
+            this.reduce(StateObject_OnUpdateFlowState_UpdateStateObject, Actions.UpdateFlowState<T>()),
         };
 
         //Reducer Methods
@@ -28,6 +29,13 @@ namespace GraphFlow.flow
         public GraphState<T> nodesAndEdgesRun_OnEdgeEvaluation_AddNodesAndEdgesRun(FlowAction<GraphEdge<T>> edgeEvaluatedAction, GraphState<T> currentState)
         {
             currentState.nodesAndEdgesRun.Add(edgeEvaluatedAction.Parameters.name);
+            return currentState;
+        }
+
+        public GraphState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<T> updateAction, GraphState<T> currentState)
+        {
+            var updatedStateObj = updateAction.Parameters;
+            currentState.stateObject = updatedStateObj;
             return currentState;
         }
 

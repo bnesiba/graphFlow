@@ -15,11 +15,21 @@ namespace ExampleApi.Controllers
             _exampleGraph = exampleGraph;
         }
 
-        [HttpGet]
+        [HttpGet("test")]
         public virtual IActionResult RunTest()
         {
             var graph = _exampleGraph.GetGraph();
             var output = graph.ExecuteGraph();
+            return StatusCode(200, output);
+        }
+
+        [HttpGet("testWithValue")]
+        public virtual IActionResult RunTestWithValue()
+        {
+            var graph = _exampleGraph.GetGraph();
+            var startingValue = ExampleGraphStateObject.DefaultValue();
+            startingValue.ShouldDoTheThing = true;
+            var output = graph.ExecuteGraph(startingValue);
             return StatusCode(200, output);
         }
     }

@@ -58,7 +58,6 @@ namespace ExampleApi
         {
             injectedState.NodeOutputs.TryGetValue("Node1", out string? node1Value);
             injectedState.NodeOutputs["Node1"] = node1Value + "Node1Run";
-            injectedState.ShouldDoTheThing = true;
             injectedState.NodeCount++;
             return injectedState;
         }

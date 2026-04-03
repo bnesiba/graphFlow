@@ -21,21 +21,11 @@ namespace graphFlow.models
             startNode = null;
         }
 
-        //public T ExecuteGraph(T graphInput)
-        //{
-        //    //call action to run graph.
-        //    //get graph state
-        //    //return state
-        //    GraphNode<T> initialNode = this.startNode;
-        //    if (initialNode == null)
-        //    {
-        //        throw new ArgumentException("Start node must exist to execute graph");
-        //    }
-        //    //_flowState.ResolveAction(Actions.InitializeFlowState(graphInput));
-        //    _flowState.ResolveAction(Actions.GraphExecution(this));
-        //    T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
-        //    return currentState;
-        //}
+        public T ExecuteGraph(T graphInput)
+        {
+            _flowState.ResolveAction(Actions.UpdateFlowState(graphInput));
+            return ExecuteGraph();
+        }
 
         public T ExecuteGraph()
         {
@@ -44,7 +34,6 @@ namespace graphFlow.models
             {
                 throw new ArgumentException("Start node must exist to execute graph");
             }
-            //_flowState.ResolveAction(Actions.InitializeFlowState(graphInput));
             _flowState.ResolveAction(Actions.GraphExecution(this));
             T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
             return currentState;
