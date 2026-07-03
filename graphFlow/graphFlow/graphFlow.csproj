@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>bcn.$(AssemblyName)</PackageId>
     <Title>GraphFlow - a graph architecture for C# built on ActionFlow.</Title>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>Brandon Nesiba</Authors>
     <Product>bcn.$(AssemblyName)</Product>
     <Description>GraphFlow provides a typesafe, performant graph architecture for c# applications. 
@@ -34,7 +34,7 @@ Built on ActionFlow, GraphFlow provides a framework for defining and executing g
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="bcn.ActionFlow" Version="1.0.2" />
+    <PackageReference Include="bcn.ActionFlow" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
