@@ -7,11 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bcn.ActionFlow" Version="1.0.4" />
+    <PackageReference Include="bcn.GraphFlow" Version="1.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\graphFlow\GraphFlow.csproj" />
   </ItemGroup>
 
 </Project>
