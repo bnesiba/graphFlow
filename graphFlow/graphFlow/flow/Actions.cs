@@ -26,10 +26,15 @@ namespace GraphFlow.flow
 
         public static FlowAction<GraphNodeResult> NodeSubtreeComplete(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeSubtreeCompleteStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeSubtreeComplete<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeSubtreeComplete", Parameters = result };
-
+        
+        //TODO: hook these up? ↓ ↓ 
         public static FlowAction<GraphEdge> EdgeEvaluation(GraphEdge? edge = null) => new FlowAction<GraphEdge> { Name = "EvaluateEdgeStateless", Parameters = edge };
         public static FlowAction<GraphEdge<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdge<T>> { Name = "EvaluateEdge", Parameters = edge };
-        public static FlowAction<GraphEdge<T>> EdgeEndOfBranch<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdge<T>> { Name = "EndOfBranch", Parameters = edge };
+
+
+        public static FlowAction<GraphEdgeResult> EdgeEvaluated(GraphEdgeResult? edge = null) => new FlowAction<GraphEdgeResult> { Name = "EdgeEvaluatedStateless", Parameters = edge };
+        public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
+        public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
 
     }
 }

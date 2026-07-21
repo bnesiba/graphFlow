@@ -26,4 +26,20 @@ namespace graphFlow.models
 
         public string name { get; set; }
     }
+
+    public class GraphEdgeResult<T> : GraphEdgeResultBase
+    {
+        public GraphEdge<T> edgeExecuted { get; set; }
+        
+    }
+
+    public class GraphEdgeResult : GraphEdgeResultBase
+    {
+        public GraphEdge edgeExecuted { get; set; }
+    }
+
+    public abstract class GraphEdgeResultBase
+    {
+        public bool shouldContinue { get; set; }
+    }
 }

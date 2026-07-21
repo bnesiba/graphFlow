@@ -1,5 +1,6 @@
 ﻿using ActionFlow.Models;
 using graphFlow.models;
+using GraphFlow.models;
 
 namespace GraphFlow.flow
 {
@@ -9,29 +10,37 @@ namespace GraphFlow.flow
 
         public List<IFlowReductionBase<GraphState<T>>> Reductions => new List<IFlowReductionBase<GraphState<T>>> 
         {
-            this.reduce(nodesAndEdgesRun_OnNodeComplete_AddNodesAndEdgesRun, Actions.NodeExecuted<T>()),
-            this.reduce(nodesAndEdgesRun_OnEdgeEvaluation_AddNodesAndEdgesRun, Actions.EdgeEvaluation<T>()),
+            this.reduce(GraphStateEvents_OnNodeExecution_AddNodeStart, Actions.NodeExecution<T>()),
+            this.reduce(GraphStateEvents_OnNodeExecuted_AddNodeComplete, Actions.NodeExecuted<T>()),
+            this.reduce(GraphStateEvents_OnEdgeEvaluated_AddEdgeEvaluation, Actions.EdgeEvaluated<T>()),
             this.reduce(StateObject_OnNodeComplete_UpdateStateObject, Actions.NodeExecuted<T>()),
             this.reduce(StateObject_OnUpdateFlowState_UpdateStateObject, Actions.UpdateFlowState<T>()),
         };
 
         //Reducer Methods
-        public GraphState<T> nodesAndEdgesRun_OnNodeExecute_AddNodesAndEdgesRun(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphState<T> currentState)
+        public GraphState<T> GraphStateEvents_OnNodeExecution_AddNodeStart(FlowAction<GraphNode<T>> nodeExecutedAction, GraphState<T> currentState)
         {
-            currentState.nodesAndEdgesRun.Add($"{nodeExecutedAction.Parameters.nodeExecuted.name}");
+            var result = nodeExecutedAction.Parameters;
+            var graphEvent = new NodeStart<T>(currentState.stateObject, result.name, result.id, currentState.id);
+            currentState.graphStateEvents.Add(graphEvent);
             return currentState;
         }
-        public GraphState<T> nodesAndEdgesRun_OnNodeComplete_AddNodesAndEdgesRun(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphState<T> currentState)
+        public GraphState<T> GraphStateEvents_OnNodeExecuted_AddNodeComplete(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphState<T> currentState)
         {
-            currentState.nodesAndEdgesRun.Add($"{nodeExecutedAction.Parameters.nodeExecuted.name}");
+            var result = nodeExecutedAction.Parameters;
+            var graphEvent = new NodeComplete<T>(result.nodeOutput, result.nodeExecuted.name, result.nodeExecuted.id, result.success, currentState.id);
+            currentState.graphStateEvents.Add(graphEvent);
             return currentState;
         }
-        public GraphState<T> nodesAndEdgesRun_OnEdgeEvaluation_AddNodesAndEdgesRun(FlowAction<GraphEdge<T>> edgeEvaluatedAction, GraphState<T> currentState)
+        public GraphState<T> GraphStateEvents_OnEdgeEvaluated_AddEdgeEvaluation(FlowAction<GraphEdgeResult<T>> edgeEvaluatedAction, GraphState<T> currentState)
         {
-            currentState.nodesAndEdgesRun.Add(edgeEvaluatedAction.Parameters.name);
+            var result = edgeEvaluatedAction.Parameters;
+            var graphEvent = new EdgeEvaluation(result.edgeExecuted.targetNode.id, result.shouldContinue, currentState.id);
+            currentState.graphStateEvents.Add(graphEvent);
             return currentState;
         }
 
+        //TODO: consider removing stateobject from graphstate
         public GraphState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<T> updateAction, GraphState<T> currentState)
         {
             var updatedStateObj = updateAction.Parameters;

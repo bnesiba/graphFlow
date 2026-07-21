@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphFlow", "graphFlow\Grap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApi", "ExampleApi\ExampleApi.csproj", "{865DA01B-3BA2-40ED-BFD8-6708103738BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphFlow.Hosting", "GraphFlow.Hosting\GraphFlow.Hosting.csproj", "{197270CA-A6E3-4C39-A103-E15E16176FFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{865DA01B-3BA2-40ED-BFD8-6708103738BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{865DA01B-3BA2-40ED-BFD8-6708103738BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{865DA01B-3BA2-40ED-BFD8-6708103738BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197270CA-A6E3-4C39-A103-E15E16176FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197270CA-A6E3-4C39-A103-E15E16176FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197270CA-A6E3-4C39-A103-E15E16176FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197270CA-A6E3-4C39-A103-E15E16176FFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

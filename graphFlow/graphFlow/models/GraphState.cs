@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GraphFlow.flow;
+using GraphFlow.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace graphFlow.models
 {
-    public class GraphState<T> : GraphStateBase
+    //TODO: consider removing stateObject and maybe the whole generic graphstate model. 
+    public class GraphState<T>: GraphStateBase
     {
         public GraphState(T state) : base()
         {
@@ -30,12 +33,12 @@ namespace graphFlow.models
     public abstract class GraphStateBase
     {
         public Guid id {  get; set; }
-        public List<string> nodesAndEdgesRun { get; set; }
+        public List<GraphStateEvent> graphStateEvents { get; set; }
 
         public GraphStateBase()
         {
             id = Guid.NewGuid();
-            nodesAndEdgesRun = new List<string>();
+            graphStateEvents = new List<GraphStateEvent>();
         }
     }
 }
