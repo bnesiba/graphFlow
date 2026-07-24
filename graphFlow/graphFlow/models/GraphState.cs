@@ -33,11 +33,13 @@ namespace graphFlow.models
     public abstract class GraphStateBase
     {
         public Guid id {  get; set; }
+        public Guid threadId { get; set; }
         public List<GraphStateEvent> graphStateEvents { get; set; }
 
         public GraphStateBase()
         {
             id = Guid.NewGuid();
+            threadId = Guid.NewGuid();
             graphStateEvents = new List<GraphStateEvent>();
         }
     }

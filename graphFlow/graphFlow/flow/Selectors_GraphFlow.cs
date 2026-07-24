@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GraphFlow.flow
 {
     //TODO: maybe selectors don't need to exist?
-    public static class GraphFlowSelectors<T> where T : IDefaultValueHaver<T>
+    public static class GraphFlowSelectors<T>
     {
         public static FlowDataSelector<GraphState<T>, T> GetStateData = new FlowDataSelector<GraphState<T>, T>(GetStateObject);
 

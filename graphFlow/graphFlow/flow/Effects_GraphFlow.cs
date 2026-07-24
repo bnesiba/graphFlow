@@ -91,7 +91,7 @@ namespace GraphFlow.flow
             }
             catch (Exception e)
             {
-                //probably do somthing, right?
+                //TODO: probably do somthing, right?
                 Console.WriteLine(e);
             }
             //run nodes that should be run
