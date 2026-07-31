@@ -1,6 +1,6 @@
 ﻿using ActionFlow.Models;
 using graphFlow.models;
-using GraphFlow.persistence;
+using GraphFlow.persistence.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +37,6 @@ namespace GraphFlow.flow
         public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
 
-        public static FlowAction<PersistenceRecord<T>> RunPersisted<T>(PersistenceRecord<T>? record = null) => new FlowAction<PersistenceRecord<T>> { Name = "RunPersisted", Parameters = record };
+        public static FlowAction<GraphRun<T>> RunPersisted<T>(GraphRun<T>? record = null) => new FlowAction<GraphRun<T>> { Name = "RunPersisted", Parameters = record };
     }
 }

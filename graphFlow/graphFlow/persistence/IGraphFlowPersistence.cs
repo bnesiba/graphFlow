@@ -1,4 +1,5 @@
 ﻿using graphFlow.models;
+using GraphFlow.persistence.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace GraphFlow.persistence
 {
     public interface IGraphFlowPersistence<T>
     {
-        public void StoreGraphSnapshot( PersistenceRecord<T> persistenceRecord);
+        public void StoreGraphSnapshot( GraphRun<T> persistenceRecord);
 
-        public StoredPersistenceRecord<T> RetrieveGraphSnapshot(Guid snapshotId);
+        public StoredGraphRun<T> RetrieveGraphSnapshot(Guid runId);
 
-        public List<StoredPersistenceRecord<T>> RetrieveGraphThread(Guid threadId);
+        public GraphThread<T> RetrieveGraphThread(Guid threadId);
     }
 }

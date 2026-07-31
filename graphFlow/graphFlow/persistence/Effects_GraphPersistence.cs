@@ -2,6 +2,7 @@
 using ActionFlow.Models;
 using graphFlow.models;
 using GraphFlow.flow;
+using GraphFlow.persistence.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +33,10 @@ namespace GraphFlow.persistence
         {
             var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.GetStateData);
             var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphState<T>>.GetStateData);
-            PersistenceRecord<T> record = new PersistenceRecord<T>
+            GraphRun<T> record = new GraphRun<T>
             {
-                stateObject = stateObjectSnapshot,
-                graphState = graphStateSnapshot,
+                StateObject = stateObjectSnapshot,
+                GraphData = graphStateSnapshot,
             };
             flowPersistence.StoreGraphSnapshot(record);
             return Actions.RunPersisted(record);
