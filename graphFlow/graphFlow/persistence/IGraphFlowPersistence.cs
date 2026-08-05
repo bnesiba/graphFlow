@@ -15,5 +15,8 @@ namespace GraphFlow.persistence
         public StoredGraphRun<T> RetrieveGraphSnapshot(Guid runId);
 
         public GraphThread<T> RetrieveGraphThread(Guid threadId);
+
+        //TODO: search?
+        //TODO: get all? get by timespan? 
     }
 }

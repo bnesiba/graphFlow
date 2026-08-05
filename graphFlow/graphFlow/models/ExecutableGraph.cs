@@ -1,5 +1,6 @@
 ﻿using ActionFlow;
 using GraphFlow.flow;
+using GraphFlow.persistence;
 
 namespace graphFlow.models
 {
@@ -7,14 +8,17 @@ namespace graphFlow.models
     {
         private FlowState _flowState;
         private FlowStateData<T> _flowStateData;
+        private PersistenceManager<T> _persistenceManager;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T>? startNode { get; set; }
+        public PersistenceManager<T> graphPersistence { get {  return _persistenceManager; } }//TODO: right place for this?
 
-        public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData):base()
+        public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData, PersistenceManager<T> persistence):base()
         {
             _flowState = flowState;
             _flowStateData = flowStateData;
+            _persistenceManager = persistence;
             graphNodes = new Dictionary<string, GraphNode<T>>();
             graphEdges = new List<GraphEdge<T>>();
             startNode = null;
