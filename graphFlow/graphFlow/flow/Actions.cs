@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace GraphFlow.flow
 {
     //TODO: update action/effects implementation so that inputs can be non-nullable without breaking effects
+    //TODO: remove stateless actions - stateless graphs won't be supported.
     public static class Actions
     {
         public static FlowAction<T> UpdateFlowState<T>(T? initialState = default) => new FlowAction<T> { Name = "InitializeFlowState", Parameters = initialState };
@@ -22,10 +23,10 @@ namespace GraphFlow.flow
         public static FlowAction<GraphNode> NodeExecution(GraphNode? node = null) => new FlowAction<GraphNode> { Name = "ExcuteNodeStateless", Parameters = node };
         public static FlowAction<GraphNode<T>> NodeExecution<T>(GraphNode<T>? node = null) => new FlowAction<GraphNode<T>> { Name = "ExecuteNode", Parameters = node };
 
-        public static FlowAction<GraphNodeResult> NodeExecuted(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeExecutedStateless", Parameters = result };
+        //public static FlowAction<GraphNodeResult> NodeExecuted(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeExecutedStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeExecuted<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeExecuted", Parameters = result };
 
-        public static FlowAction<GraphNodeResult> NodeSubtreeComplete(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeSubtreeCompleteStateless", Parameters = result };
+        //public static FlowAction<GraphNodeResult> NodeSubtreeComplete(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeSubtreeCompleteStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeSubtreeComplete<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeSubtreeComplete", Parameters = result };
         
         //TODO: hook these up? ↓ ↓ 

@@ -13,18 +13,20 @@ namespace graphFlow.util
     {
         private FlowState _flowState;
         private FlowStateData<T> _flowStateData;
+        private FlowStateData<GraphRunState<T>> _graphStateData;
         private PersistenceManager<T> _persistenceManager;
 
-        public GraphBuilder(FlowState flowState, FlowStateData<T> flowStateData, PersistenceManager<T> persistence)
+        public GraphBuilder(FlowState flowState, FlowStateData<T> flowStateData, FlowStateData<GraphRunState<T>> graphStateData, PersistenceManager<T> persistence)
         {
             _flowState = flowState;
             _flowStateData = flowStateData;
+            _graphStateData = graphStateData;
             _persistenceManager = persistence;
         }
 
         public ExecutableGraph<T> GetExecutableGraph()
         {
-            return new ExecutableGraph<T>(_flowState, _flowStateData, _persistenceManager);
+            return new ExecutableGraph<T>(_flowState, _flowStateData,_graphStateData, _persistenceManager);
         }
 
     }

@@ -23,7 +23,7 @@ namespace GraphFlow.flow
         }
         public T StateObject_OnNodeComplete_UpdateStateObject(FlowAction<GraphNodeResult<T>> nodeExecutedAction, T currentState)
         {
-            var stateObj = nodeExecutedAction.Parameters.nodeOutput;
+            var stateObj = nodeExecutedAction.Parameters.NodeOutput;
             currentState = stateObj;
             return currentState;
         }

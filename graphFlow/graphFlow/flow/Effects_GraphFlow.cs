@@ -60,10 +60,10 @@ namespace GraphFlow.flow
                 //TODO: log and/or include error
                 success = false;
             }
-            GraphNodeResult<T> result = new GraphNodeResult<T> { nodeExecuted = nodeToExecute, success = success };
+            GraphNodeResult<T> result = new GraphNodeResult<T> { NodeExecuted = nodeToExecute, Success = success };
             if (success)
             {
-                result.nodeOutput = nodeResult;
+                result.NodeOutput = nodeResult;
             }
 
             return Actions.NodeExecuted(result);
@@ -74,12 +74,12 @@ namespace GraphFlow.flow
             var subtreeCompleteAction = Actions.NodeSubtreeComplete(nodeExecutedAction.Parameters);
 
             //If node failed, don't run edges/futher nodes
-            if (!nodeExecutedAction.Parameters.success)
+            if (!nodeExecutedAction.Parameters.Success)
             {
                 return subtreeCompleteAction;
             }
 
-            var nodeCompleted = nodeExecutedAction.Parameters.nodeExecuted;
+            var nodeCompleted = nodeExecutedAction.Parameters.NodeExecuted;
             //evaluate edges
             var edgesToEvaluate = nodeCompleted.edges;
             try

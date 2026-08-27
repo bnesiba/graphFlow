@@ -10,9 +10,9 @@ namespace GraphFlow.persistence.models
     public class GraphRun<T>
     {
         public T StateObject { get; set; }
-        public GraphState<T> GraphData { get; set; }
-        public DateTime StartTime { get { return GraphData.graphStateEvents.FirstOrDefault()?.EventTime ?? DateTime.MinValue; } }
-        public DateTime EndTime { get { return GraphData.graphStateEvents.LastOrDefault()?.EventTime ?? DateTime.MinValue; } }
+        public GraphRunState<T> GraphData { get; set; }
+        public DateTime StartTime { get { return GraphData.GraphEvents.FirstOrDefault()?.EventTime ?? DateTime.MinValue; } }
+        public DateTime EndTime { get { return GraphData.GraphEvents.LastOrDefault()?.EventTime ?? DateTime.MinValue; } }
 
     }
 

@@ -14,12 +14,15 @@ namespace graphFlow.models
 
     }
 
+
+    //TODO: simplify, untyped graphs no longer supported.
     public class GraphEdge : GraphEdgeBase
     {
         public GraphNode targetNode { get; set; }
         public Func<bool> evaluation { get; set; }
     }
 
+    //TODO: simplify, untyped graphs no longer supported.
     public abstract class GraphEdgeBase
     {
         public Guid id { get; set; }
@@ -42,4 +45,6 @@ namespace graphFlow.models
     {
         public bool shouldContinue { get; set; }
     }
+
+    public class GraphEdgeExecution
 }
