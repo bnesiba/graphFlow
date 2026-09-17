@@ -29,14 +29,15 @@ namespace GraphFlow.persistence
             this.effect(OnGraphExecuted_PersistResults_ResolveResultsPersisted, Actions.GraphExecuted<T>())
         };
 
+        //TODO: fix for new models and stuff
         public FlowActionBase OnGraphExecuted_PersistResults_ResolveResultsPersisted(FlowAction<ExecutableGraph<T>> graphExecuted)
         {
             var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.GetStateData);
-            var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphState<T>>.GetStateData);
-            GraphRun<T> record = new GraphRun<T>
+            var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphState<T>>.GetStateData);//TODO: get correctly
+            GraphExecutionData<T> record = new GraphExecutionData<T>
             {
                 StateObject = stateObjectSnapshot,
-                GraphData = graphStateSnapshot,
+                GraphData = null,//TODO: can't be null?
             };
             flowPersistence.StoreGraphSnapshot(record);
             return Actions.RunPersisted(record);

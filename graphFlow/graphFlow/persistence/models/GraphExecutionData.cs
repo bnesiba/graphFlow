@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GraphFlow.persistence.models
 {
-    public class GraphRun<T>
+    public class GraphExecutionData<T>
     {
         public T StateObject { get; set; }
         public GraphRunState<T> GraphData { get; set; }
@@ -16,13 +16,13 @@ namespace GraphFlow.persistence.models
 
     }
 
-    public class StoredGraphRun<T>: GraphRun<T>
+    public class StoredGraphExecutionData<T>: GraphExecutionData<T>
     {
         public DateTime recordDate { get; set; }
 
-        public static StoredGraphRun<T> FromGraphRun(GraphRun<T> record)
+        public static StoredGraphExecutionData<T> FromGraphRun(GraphExecutionData<T> record)
         {
-            return new StoredGraphRun<T>
+            return new StoredGraphExecutionData<T>
             {
                 GraphData = record.GraphData,
                 StateObject = record.StateObject,

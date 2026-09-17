@@ -10,9 +10,9 @@ namespace GraphFlow.persistence
 {
     public interface IGraphFlowPersistence<T>
     {
-        public void StoreGraphSnapshot( GraphRun<T> persistenceRecord);
+        public void StoreGraphSnapshot(GraphExecutionData<T> persistenceRecord);
 
-        public StoredGraphRun<T> RetrieveGraphSnapshot(Guid runId);
+        public StoredGraphExecutionData<T> RetrieveGraphSnapshot(Guid runId);
 
         public GraphThread<T> RetrieveGraphThread(Guid threadId);
 

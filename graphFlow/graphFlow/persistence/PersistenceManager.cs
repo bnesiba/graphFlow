@@ -21,7 +21,7 @@ namespace GraphFlow.persistence
         {
             T? stateObject = default(T);
             var thread = _graphPersistence.RetrieveGraphThread(threadId);
-            StoredGraphRun<T>? lastRun = thread.Runs.LastOrDefault();
+            StoredGraphExecutionData<T>? lastRun = thread.Runs.LastOrDefault();
             if (lastRun != null)
             {
                 stateObject = lastRun.StateObject;
@@ -32,7 +32,7 @@ namespace GraphFlow.persistence
         public T? GetRunState(Guid runId)
         {
             T? stateObject = default(T);
-            StoredGraphRun<T>? run = _graphPersistence.RetrieveGraphSnapshot(runId);
+            StoredGraphExecutionData<T>? run = _graphPersistence.RetrieveGraphSnapshot(runId);
             if (run != null)
             {
                 stateObject = run.StateObject;
@@ -40,10 +40,10 @@ namespace GraphFlow.persistence
             return stateObject;
         }
 
-        public StoredGraphRun<T> GetRun(Guid runId)
+        public StoredGraphExecutionData<T> GetRun(Guid runId)
         {
-            StoredGraphRun<T> runResponse = new StoredGraphRun<T>(); 
-            StoredGraphRun<T>? run = _graphPersistence.RetrieveGraphSnapshot(runId);
+            StoredGraphExecutionData<T> runResponse = new StoredGraphExecutionData<T>(); 
+            StoredGraphExecutionData<T>? run = _graphPersistence.RetrieveGraphSnapshot(runId);
             if(run != null)
             {
                 runResponse = run;
@@ -54,7 +54,7 @@ namespace GraphFlow.persistence
         public GraphThread<T> GetThread(Guid threadId)
         {
             //TODO: (for all of these) should this error when not found?
-            GraphThread<T> graphThread = new GraphThread<T>(Guid.Empty, new List<StoredGraphRun<T>>()); 
+            GraphThread<T> graphThread = new GraphThread<T>(Guid.Empty, new List<StoredGraphExecutionData<T>>()); 
             GraphThread<T>? foundThread = _graphPersistence.RetrieveGraphThread(threadId);
             if (foundThread != null)
             {

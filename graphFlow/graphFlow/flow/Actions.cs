@@ -18,7 +18,7 @@ namespace GraphFlow.flow
         public static FlowAction<ExecutableGraph<T>> GraphExecution<T>(ExecutableGraph<T>? graph = null) => new FlowAction<ExecutableGraph<T>> { Name = "ExecuteGraph", Parameters = graph};
 
         public static FlowAction<ExecutableGraph> GraphExecuted(ExecutableGraph? graph = null, bool success = false) => new FlowAction<ExecutableGraph> { Name = "GraphExecutedStateless", Parameters = graph };
-        public static FlowAction<ExecutableGraph<T>> GraphExecuted<T>(ExecutableGraph<T>? graph = null, bool success = false) => new FlowAction<ExecutableGraph<T>> { Name = "GraphExecuted", Parameters = graph };
+        public static FlowAction<ExecutableGraphResult<T>> GraphExecuted<T>(ExecutableGraphResult<T>? graph = null, bool success = false) => new FlowAction<ExecutableGraphResult<T>> { Name = "GraphExecuted", Parameters = graph };
 
         public static FlowAction<GraphNode> NodeExecution(GraphNode? node = null) => new FlowAction<GraphNode> { Name = "ExcuteNodeStateless", Parameters = node };
         public static FlowAction<GraphNode<T>> NodeExecution<T>(GraphNode<T>? node = null) => new FlowAction<GraphNode<T>> { Name = "ExecuteNode", Parameters = node };
@@ -38,6 +38,6 @@ namespace GraphFlow.flow
         public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
 
-        public static FlowAction<GraphRun<T>> RunPersisted<T>(GraphRun<T>? record = null) => new FlowAction<GraphRun<T>> { Name = "RunPersisted", Parameters = record };
+        public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };
     }
 }

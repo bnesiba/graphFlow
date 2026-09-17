@@ -5,25 +5,25 @@ namespace GraphFlow.persistence.InMemory
 {
     public class InMemoryFlowPersistence<T> : IGraphFlowPersistence<T>
     {
-        private Dictionary<Guid, StoredGraphRun<T>> runStorage;
+        private Dictionary<Guid, StoredGraphExecutionData<T>> runStorage;
         private Dictionary<Guid, HashSet<Guid>> threadStorage;
 
 
         public InMemoryFlowPersistence()
         {
-            runStorage = new Dictionary<Guid, StoredGraphRun<T>>();
+            runStorage = new Dictionary<Guid, StoredGraphExecutionData<T>>();
             threadStorage = new Dictionary<Guid, HashSet<Guid>>();
         }
 
-        public StoredGraphRun<T> RetrieveGraphSnapshot(Guid runId)
+        public StoredGraphExecutionData<T> RetrieveGraphSnapshot(Guid runId)
         {
             //TODO: throw if missing? return null?
-            return runStorage.TryGetValue(runId, out StoredGraphRun<T>? value) ? value : new StoredGraphRun<T>();
+            return runStorage.TryGetValue(runId, out StoredGraphExecutionData<T>? value) ? value : new StoredGraphExecutionData<T>();
         }
 
         public GraphThread<T> RetrieveGraphThread(Guid threadId)
         {
-            var threadRecords = new List<StoredGraphRun<T>>();
+            var threadRecords = new List<StoredGraphExecutionData<T>>();
             if(threadStorage.TryGetValue(threadId, out var thread))
             {
                 foreach (var recordId in thread)
@@ -42,7 +42,7 @@ namespace GraphFlow.persistence.InMemory
             return graphThread;
         }
 
-        public void StoreGraphSnapshot(GraphRun<T> persistenceRecord)
+        public void StoreGraphSnapshot(GraphExecutionData<T> persistenceRecord)
         {
             var id = persistenceRecord.GraphData.id;
             var threadId = persistenceRecord.GraphData.threadId;
@@ -51,7 +51,7 @@ namespace GraphFlow.persistence.InMemory
             {
                 threadStorage[threadId] = new HashSet<Guid>();
             }
-            runStorage[id] = StoredGraphRun<T>.FromGraphRun(persistenceRecord);
+            runStorage[id] = StoredGraphExecutionData<T>.FromGraphRun(persistenceRecord);
             threadStorage[threadId].Add(id);
         }
     }

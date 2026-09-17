@@ -27,7 +27,8 @@ namespace GraphFlow.flow
         public FlowActionBase OnGraphExecution_ExecuteStartNode_ResolveGraphExecuted(FlowAction<ExecutableGraph<T>> executeGraphAction)
         {
             bool success = false;
-            GraphNode<T> nodeToExecute = executeGraphAction.Parameters.startNode;
+            ExecutableGraph<T> executingGraph = executeGraphAction.Parameters;
+            GraphNode<T> nodeToExecute = executingGraph.startNode;
             try
             {
                 _flowActionHandler.ResolveAction(Actions.NodeExecution(nodeToExecute));
@@ -39,8 +40,16 @@ namespace GraphFlow.flow
                 //TODO: log or include error or both
                 success = false;
             }
+            T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
+            ExecutableGraphResult<T> graphResult = new ExecutableGraphResult<T>
+            {
+                GraphExecuted = executingGraph,
+                GraphOutput = stateData,
+                Success = success,
+                ErrorMessage = ""
+            };
 
-            return Actions.GraphExecuted(executeGraphAction.Parameters, success);
+            return Actions.GraphExecuted(graphResult);
         }
 
         public FlowActionBase OnNodeExecution_ExecuteNode_ResolveNodeExecuted(FlowAction<GraphNode<T>> executeNodeAction)

@@ -50,7 +50,8 @@ namespace graphFlow.models
         public Guid Id { get; init; }
         public Guid ThreadId { get; init; }
 
-        public Dictionary<Guid, NodeRun<T>> NodeRuns { get; set; }
+        public Dictionary<Guid, GraphRun> GraphRuns { get; set; }
+        public Dictionary<Guid, NodeRun> NodeRuns { get; set; }
         public Dictionary<Guid, EdgeRun> EdgeRuns { get; set; }
         public Dictionary<Guid, string> CheckPoints { get; set; }
         public List<GraphEvent> GraphEvents { get; set; }
@@ -61,17 +62,31 @@ namespace graphFlow.models
             Id = Guid.NewGuid();
             ThreadId = Guid.NewGuid();
             GraphEvents = new List<GraphEvent>();
-            NodeRuns = new Dictionary<Guid, NodeRun<T>>();
+            NodeRuns = new Dictionary<Guid, NodeRun>();
             EdgeRuns = new Dictionary<Guid, EdgeRun>();
+            GraphRuns = new Dictionary<Guid, GraphRun>();
             CheckPoints = new Dictionary<Guid, string>();
             CurrentCheckpoint = Guid.Empty;
         }
 
     }
 
-    public class NodeRun<T>
+    public class GraphRun//<T>?
+    {
+        public Guid ExecutionId { get; init; }
+        public Guid GraphId { get; init; }
+        public Guid Input { get; set; }
+        public Guid Output { get; set; }
+        public bool? Succeeded { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+    }
+
+
+    public class NodeRun//<T>?
     {
         public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid ExecutionId { get; init; }
         public Guid NodeId { get; init; }
         public string NodeName { get; init; }
         public Guid Input {  get; set; }
@@ -84,6 +99,7 @@ namespace graphFlow.models
     public class EdgeRun//<T>?
     {
         public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid ExecutionId { get; init; }
         public string EdgeName { get; set; }
         public Guid SourceNodeId { get; init; }
         public Guid TargetNodeId { get; init; }
@@ -110,6 +126,8 @@ namespace graphFlow.models
     //TODO: enum?
     public static class GraphEventTypes
     {
+        public static readonly string GraphStarted = "GraphStarted";
+        public static readonly string GraphCompleted = "GraphCompleted";
         public static readonly string NodeStarted = "NodeStarted";
         public static readonly string NodeCompleted = "NodeCompleted";
         public static readonly string EdgeEvaluationStarted = "EdgeStarted";
@@ -128,9 +146,16 @@ namespace graphFlow.models
             return checkpointId;
         }
 
+        public static void AddGraphStarted<T>(this GraphRunState<T> graphState, ExecutableGraph<T> graphRunning, Guid graphExecutionId)
+        {
+
+        }
+
+        public static Guid AddGraphComplete<T>(this GraphRunState<T> graphState, Ex)
 
 
-        public static void AddNodeStarted<T>(this GraphRunState<T> graphState, GraphNode<T> nodeRunning)
+
+        public static void AddNodeStarted<T>(this GraphRunState<T> graphState, GraphNode<T> nodeRunning, Guid nodeExecutionId)
         {
             if(graphState.CurrentCheckpoint == Guid.Empty)
             {
@@ -145,19 +170,20 @@ namespace graphFlow.models
                 Input = graphState.CurrentCheckpoint,
                 StartTime = startTime
             };
-            graphState.NodeRuns.Add(nodeStarting.Id, nodeStarting);
+            graphState.NodeRuns.Add(nodeStarting.ExecutionId, nodeStarting);
             graphState.GraphEvents.Add(new GraphEvent(nodeStarting.Id, GraphEventTypes.NodeStarted, startTime));
         }
 
-        public static Guid AddNodeComplete<T>(this GraphRunState<T> graphState, Guid runId, GraphNodeResult<T> nodeResult)
+        public static Guid AddNodeComplete<T>(this GraphRunState<T> graphState, Guid nodeExecutionId, GraphNodeResult<T> nodeResult)
         {
             Guid checkpointId = graphState.AddCheckpoint(nodeResult.NodeOutput);
             var completeTime = DateTime.UtcNow;
-            var NodeRun = graphState.NodeRuns[runId];
+            var NodeRun = graphState.NodeRuns[nodeExecutionId];
             NodeRun.EndTime = completeTime;
             NodeRun.Succeeded = nodeResult.Success;
             NodeRun.Output = checkpointId;
             graphState.CurrentCheckpoint = checkpointId;
+            graphState.GraphEvents.Add(new GraphEvent(NodeRun.ExecutionId, GraphEventTypes.NodeCompleted, completeTime));
             return checkpointId;
         }
 

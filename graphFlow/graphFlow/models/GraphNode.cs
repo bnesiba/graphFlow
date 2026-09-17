@@ -30,6 +30,7 @@ namespace graphFlow.models
         public GraphNode<T> NodeExecuted { get; set; }
         public T NodeOutput { get; set; }
         public bool Success { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 
     public class GraphNodeExecute<T>

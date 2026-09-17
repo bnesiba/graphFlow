@@ -9,18 +9,18 @@ namespace GraphFlow.persistence.unSet
 {
     public class NotImplementedFlowPersistence<T> : IGraphFlowPersistence<T>
     {
-        public StoredGraphRun<T> RetrieveGraphSnapshot(Guid runId)
+        public StoredGraphExecutionData<T> RetrieveGraphSnapshot(Guid runId)
         {
             //TODO: throw if missing? return null?
-            return new StoredGraphRun<T>();
+            return new StoredGraphExecutionData<T>();
         }
 
         public GraphThread<T> RetrieveGraphThread(Guid threadId)
         {
-            return new GraphThread<T>(Guid.NewGuid(), new List<StoredGraphRun<T>>());
+            return new GraphThread<T>(Guid.NewGuid(), new List<StoredGraphExecutionData<T>>());
         }
 
-        public void StoreGraphSnapshot(GraphRun<T> persistenceRecord)
+        public void StoreGraphSnapshot(GraphExecutionData<T> persistenceRecord)
         {
 
         }

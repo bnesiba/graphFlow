@@ -2,7 +2,7 @@
 using ActionFlow.Models;
 using graphFlow.models;
 using GraphFlow.models;
-
+//TODO: delete
 namespace GraphFlow.flow
 {
     public class GraphFlowReducer<T> : IFlowStateReducer<GraphState<T>>

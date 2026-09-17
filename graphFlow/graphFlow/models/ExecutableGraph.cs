@@ -27,13 +27,13 @@ namespace graphFlow.models
             startNode = null;
         }
 
-        public GraphRun<T> ExecuteGraph(T graphInput)
+        public GraphExecutionData<T> ExecuteGraph(T graphInput)
         {
             _flowState.ResolveAction(Actions.UpdateFlowState(graphInput));
             return ExecuteGraph();
         }
 
-        public GraphRun<T> ExecuteGraph()
+        public GraphExecutionData<T> ExecuteGraph()
         {
             GraphNode<T>? initialNode = this.startNode;
             if (initialNode == null)
@@ -43,7 +43,7 @@ namespace graphFlow.models
             _flowState.ResolveAction(Actions.GraphExecution(this));
             T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
             GraphRunState<T> graphState = _graphStateData.CurrentState(GraphFlowSelectors<T>.GetGraphState);
-            GraphRun<T> graphRun = new GraphRun<T>()
+            GraphExecutionData<T> graphRun = new GraphExecutionData<T>()
             {
                 GraphData = graphState,
                 StateObject = currentState
@@ -92,7 +92,7 @@ namespace graphFlow.models
             }
             else
             {
-                //TODO: errors or something?
+                //TODO: errors or something
             }
         }
 
@@ -115,7 +115,7 @@ namespace graphFlow.models
             }
             else
             {
-                //TODO: errors or something?
+                //TODO: errors or something
             }
         }
 
@@ -123,6 +123,14 @@ namespace graphFlow.models
         {
             return true;
         }
+    }
+
+    public class ExecutableGraphResult<T>
+    {
+        public ExecutableGraph<T> GraphExecuted { get; set; }
+        public T GraphOutput { get; set; }
+        public bool Success { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 
     //TODO: verify this even works ↓↓ 
