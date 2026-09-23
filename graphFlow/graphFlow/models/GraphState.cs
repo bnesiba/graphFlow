@@ -73,6 +73,7 @@ namespace graphFlow.models
 
     public class GraphRun//<T>?
     {
+        public Guid Id { get; init; } = Guid.NewGuid();
         public Guid ExecutionId { get; init; }
         public Guid GraphId { get; init; }
         public Guid Input { get; set; }
@@ -146,12 +147,32 @@ namespace graphFlow.models
             return checkpointId;
         }
 
-        public static void AddGraphStarted<T>(this GraphRunState<T> graphState, ExecutableGraph<T> graphRunning, Guid graphExecutionId)
+        public static void AddGraphStarted<T>(this GraphRunState<T> graphState, ExecutableGraphRequest<T> graphRequest)
         {
-
+            if(graphState.CurrentCheckpoint == Guid.Empty)
+            {
+                //TODO: throw errors?
+                return;
+            }
+            var startTime = DateTime.UtcNow;
+            var graphId = graphRequest.ExecutingGraph.id ?? Guid.Empty;//TODO: address? shouldn't be null
+            var graphExeId = graphRequest.GraphExecutionId;
+            GraphRun graphStarting = new GraphRun()
+            {
+                GraphId = graphId,
+                ExecutionId = graphExeId,
+                StartTime = startTime,
+                Input = graphState.CurrentCheckpoint
+            };
+            graphState.GraphRuns.Add(graphExeId, graphStarting);
+            graphState.GraphEvents.Add(new GraphEvent(graphStarting.Id, GraphEventTypes.GraphStarted, startTime));
         }
 
-        public static Guid AddGraphComplete<T>(this GraphRunState<T> graphState, Ex)
+        public static Guid AddGraphComplete<T>(this GraphRunState<T> graphState, ExecutableGraphResult<T> graphResult)
+        {
+            //TODO: implement
+            return Guid.NewGuid();
+        }
 
 
 
@@ -163,7 +184,7 @@ namespace graphFlow.models
                 return;
             }
             var startTime = DateTime.UtcNow;
-            NodeRun<T> nodeStarting = new NodeRun<T>()
+            NodeRun nodeStarting = new NodeRun()
             {
                 NodeId = nodeRunning.id,
                 NodeName  = nodeRunning.name,
@@ -207,7 +228,7 @@ namespace graphFlow.models
 
         public static void AddEdgeCompleted<T>(this GraphRunState<T> graphState, GraphEdgeResult<T> edgeCompleted)
         {
-            
+            //TODO: implement
         }
 
 

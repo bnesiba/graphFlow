@@ -24,10 +24,11 @@ namespace GraphFlow.flow
         };
 
         //Effect Methods
-        public FlowActionBase OnGraphExecution_ExecuteStartNode_ResolveGraphExecuted(FlowAction<ExecutableGraph<T>> executeGraphAction)
+        public FlowActionBase OnGraphExecution_ExecuteStartNode_ResolveGraphExecuted(FlowAction<ExecutableGraphRequest<T>> executeGraphAction)
         {
             bool success = false;
-            ExecutableGraph<T> executingGraph = executeGraphAction.Parameters;
+            Guid executionId = executeGraphAction.Parameters.GraphExecutionId;
+            ExecutableGraph<T> executingGraph = executeGraphAction.Parameters.ExecutingGraph;
             GraphNode<T> nodeToExecute = executingGraph.startNode;
             try
             {
@@ -43,6 +44,7 @@ namespace GraphFlow.flow
             T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
             ExecutableGraphResult<T> graphResult = new ExecutableGraphResult<T>
             {
+                GraphExecutionId = executionId,
                 GraphExecuted = executingGraph,
                 GraphOutput = stateData,
                 Success = success,
@@ -103,7 +105,6 @@ namespace GraphFlow.flow
                 //TODO: probably do somthing, right?
                 Console.WriteLine(e);
             }
-            //run nodes that should be run
             return subtreeCompleteAction;
         }
 

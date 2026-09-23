@@ -124,9 +124,15 @@ namespace graphFlow.models
             return true;
         }
     }
+    public class ExecutableGraphRequest<T>
+    {
+        public Guid GraphExecutionId { get; set; }
+        public ExecutableGraph<T> ExecutingGraph { get; set; }
+    }
 
     public class ExecutableGraphResult<T>
     {
+        public Guid GraphExecutionId { get; set;}
         public ExecutableGraph<T> GraphExecuted { get; set; }
         public T GraphOutput { get; set; }
         public bool Success { get; set; }

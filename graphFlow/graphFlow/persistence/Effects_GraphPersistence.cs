@@ -30,7 +30,7 @@ namespace GraphFlow.persistence
         };
 
         //TODO: fix for new models and stuff
-        public FlowActionBase OnGraphExecuted_PersistResults_ResolveResultsPersisted(FlowAction<ExecutableGraph<T>> graphExecuted)
+        public FlowActionBase OnGraphExecuted_PersistResults_ResolveResultsPersisted(FlowAction<ExecutableGraphResult<T>> graphExecuted)
         {
             var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.GetStateData);
             var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphState<T>>.GetStateData);//TODO: get correctly

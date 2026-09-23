@@ -24,14 +24,18 @@ namespace GraphFlow.flow
             this.reduce(StateObject_OnUpdateFlowState_UpdateStateObject, Actions.UpdateFlowState<T>()),
         };
 
-        //reducer methods TODO: start here
-        public GraphRunState<T> GraphStateEvents_OnGraphExecution_AddGraphStart(FlowAction<ExecutableGraph<T>> graphExecutionAction, GraphRunState<T> currentState)
+        //reducer methods TODO: start here <- !
+        public GraphRunState<T> GraphStateEvents_OnGraphExecution_AddGraphStart(FlowAction<ExecutableGraphRequest<T>> graphExecutionAction, GraphRunState<T> currentState)
         {
+            var graphExecutionRequest = graphExecutionAction.Parameters;
+            currentState.AddGraphStarted(graphExecutionRequest);
             return currentState;
         }
 
         public GraphRunState<T> GraphStateEvents_OnGraphExecuted_AddGraphComplete(FlowAction<ExecutableGraphResult<T>> graphExecutionAction, GraphRunState<T> currentState)
         {
+            var graphExecutionResult = graphExecutionAction.Parameters;
+            currentState.AddGraphComplete(graphExecutionResult);
             return currentState;
         }
 
@@ -59,7 +63,7 @@ namespace GraphFlow.flow
             return currentState;
         }
 
-        //TODO: implement properly. This will blow up on partials, which we don't want.
+        //TODO: remove or implement properly. This will blow up on partials, which we don't want.
         public GraphRunState<T> StateObject_OnNodeComplete_UpdateStateObject(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphRunState<T> currentState)
         {
             var stateObj = nodeExecutedAction.Parameters.NodeOutput;
