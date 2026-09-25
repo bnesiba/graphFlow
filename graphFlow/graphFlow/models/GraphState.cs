@@ -176,10 +176,16 @@ namespace graphFlow.models
             graphState.GraphEvents.Add(new GraphEvent(graphStarting.Id, GraphEventTypes.GraphStarted, startTime));
         }
 
-        public static Guid AddGraphComplete<T>(this GraphRunState<T> graphState, ExecutableGraphResult<T> graphResult)
+        public static void AddGraphComplete<T>(this GraphRunState<T> graphState, ExecutableGraphResult<T> graphResult)
         {
             //TODO: implement
-            return Guid.NewGuid();
+            var graphRun = graphState.GraphRuns[graphResult.GraphExecutionId];
+            var completeTime = DateTime.UtcNow;
+            graphRun.Output = graphState.CurrentCheckpoint;
+            graphRun.EndTime = completeTime;
+
+            graphRun.Succeeded = graphResult.Success;
+            graphRun.ErrorMessage = graphResult.ErrorMessage;
         }
 
 

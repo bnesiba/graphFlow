@@ -44,8 +44,8 @@ namespace GraphFlow.persistence.InMemory
 
         public void StoreGraphSnapshot(GraphExecutionData<T> persistenceRecord)
         {
-            var id = persistenceRecord.GraphData.id;
-            var threadId = persistenceRecord.GraphData.threadId;
+            var id = persistenceRecord.GraphData.Id;
+            var threadId = persistenceRecord.GraphData.ThreadId;
 
             if (!threadStorage.ContainsKey(threadId))
             {
