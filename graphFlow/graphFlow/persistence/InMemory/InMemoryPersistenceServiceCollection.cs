@@ -1,6 +1,6 @@
 ﻿using ActionFlow;
-using graphFlow.models;
-using graphFlow.util;
+using GraphFlow.models;
+using GraphFlow.util;
 using GraphFlow.flow;
 using Microsoft.Extensions.DependencyInjection;
 using System;

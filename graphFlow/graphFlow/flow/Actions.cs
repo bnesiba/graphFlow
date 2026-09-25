@@ -1,43 +1,27 @@
 ﻿using ActionFlow.Models;
-using graphFlow.models;
+using GraphFlow.models;
 using GraphFlow.persistence.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphFlow.flow
 {
     //TODO: update action/effects implementation so that inputs can be non-nullable without breaking effects
-    //TODO: remove stateless actions - stateless graphs won't be supported.
     public static class Actions
     {
         public static FlowAction<T> UpdateFlowState<T>(T? initialState = default) => new FlowAction<T> { Name = "InitializeFlowState", Parameters = initialState };
-        public static FlowAction<ExecutableGraph> GraphExecution(ExecutableGraph? graph = null) => new FlowAction<ExecutableGraph> { Name = "ExecuteGraphStateless", Parameters = graph };
         public static FlowAction<ExecutableGraphRequest<T>> GraphExecution<T>(ExecutableGraph<T>? graph = null) => new FlowAction<ExecutableGraphRequest<T>> { Name = "ExecuteGraph", Parameters = new ExecutableGraphRequest<T> { GraphExecutionId = Guid.NewGuid(), ExecutingGraph = graph } };
 
-        public static FlowAction<ExecutableGraph> GraphExecuted(ExecutableGraph? graph = null, bool success = false) => new FlowAction<ExecutableGraph> { Name = "GraphExecutedStateless", Parameters = graph };
         public static FlowAction<ExecutableGraphResult<T>> GraphExecuted<T>(ExecutableGraphResult<T>? graph = null, bool success = false) => new FlowAction<ExecutableGraphResult<T>> { Name = "GraphExecuted", Parameters = graph };
 
-        //TODO: wrap like GraphExecution
-        public static FlowAction<GraphNode> NodeExecution(GraphNode? node = null) => new FlowAction<GraphNode> { Name = "ExcuteNodeStateless", Parameters = node };
         public static FlowAction<GraphNodeRequest<T>> NodeExecution<T>(GraphNode<T>? node = null) => new FlowAction<GraphNodeRequest<T>> { Name = "ExecuteNode", Parameters = new GraphNodeRequest<T> { ExecutionId = Guid.NewGuid(), NodeExecuting = node } };
 
-        //public static FlowAction<GraphNodeResult> NodeExecuted(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeExecutedStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeExecuted<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeExecuted", Parameters = result };
 
-        //public static FlowAction<GraphNodeResult> NodeSubtreeComplete(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeSubtreeCompleteStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeSubtreeComplete<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeSubtreeComplete", Parameters = result };
         
-        //TODO: wrap like GraphExecution
-        //TODO: hook these up? ↓ ↓ 
-        public static FlowAction<GraphEdge> EdgeEvaluation(GraphEdge? edge = null) => new FlowAction<GraphEdge> { Name = "EvaluateEdgeStateless", Parameters = edge };
         public static FlowAction<GraphEdgeRequest<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdgeRequest<T>> { Name = "EvaluateEdge", Parameters = new GraphEdgeRequest<T> { ExecutionId = Guid.NewGuid(), EdgeExecuting = edge } };
-
-
-        //public static FlowAction<GraphEdgeResult> EdgeEvaluated(GraphEdgeResult? edge = null) => new FlowAction<GraphEdgeResult> { Name = "EdgeEvaluatedStateless", Parameters = edge };
+        
         public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
+        
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
 
         public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };

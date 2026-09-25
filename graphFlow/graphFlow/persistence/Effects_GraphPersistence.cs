@@ -1,6 +1,6 @@
 ﻿using ActionFlow;
 using ActionFlow.Models;
-using graphFlow.models;
+using GraphFlow.models;
 using GraphFlow.flow;
 using GraphFlow.persistence.models;
 using System;
@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 
 namespace GraphFlow.persistence
 {
+    //TODO: !Important! Update to handle new state object.
     public class GraphPersistenceEffects<T> : IFlowStateEffects
     {
         private FlowStateData<T> _stateObjectData;
-        private FlowStateData<GraphState<T>> _graphStateData;
+        private FlowStateData<GraphRunState<T>> _graphStateData;
         IGraphFlowPersistence<T> flowPersistence;
-        public GraphPersistenceEffects(FlowStateData<T> stateObjData, FlowStateData<GraphState<T>> graphData, IGraphFlowPersistence<T> persistence) 
+        public GraphPersistenceEffects(FlowStateData<T> stateObjData, FlowStateData<GraphRunState<T>> graphData, IGraphFlowPersistence<T> persistence) 
         {
             _stateObjectData = stateObjData;
             _graphStateData = graphData;
@@ -33,7 +34,7 @@ namespace GraphFlow.persistence
         public FlowActionBase OnGraphExecuted_PersistResults_ResolveResultsPersisted(FlowAction<ExecutableGraphResult<T>> graphExecuted)
         {
             var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.GetStateData);
-            var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphState<T>>.GetStateData);//TODO: get correctly
+            var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphRunState<T>>.GetStateData);//TODO: get correctly
             GraphExecutionData<T> record = new GraphExecutionData<T>
             {
                 StateObject = stateObjectSnapshot,

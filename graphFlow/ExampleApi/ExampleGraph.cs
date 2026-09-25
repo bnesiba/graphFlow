@@ -1,6 +1,6 @@
 ﻿using ExampleApi.Models;
-using graphFlow.models;
-using graphFlow.util;
+using GraphFlow.models;
+using GraphFlow.util;
 
 namespace ExampleApi
 {

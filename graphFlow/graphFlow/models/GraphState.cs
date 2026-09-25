@@ -7,43 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace graphFlow.models
+namespace GraphFlow.models
 {
-    //TODO: consider removing stateObject and maybe the whole generic graphstate model. 
-    public class GraphState<T> : GraphStateBase
-    {
-        public GraphState(T state) : base()
-        {
-            stateObject = state;
-        }
-
-        public GraphState() : base()
-        {
-            stateObject = default(T);
-        }
-
-        public T stateObject { get; set; }
-
-    }
-
-    public class GraphState : GraphStateBase
-    {
-        public GraphState() : base() { }
-    }
-
-    public abstract class GraphStateBase
-    {
-        public Guid id { get; set; }
-        public Guid threadId { get; set; }
-        public List<GraphStateEvent> graphStateEvents { get; set; }
-
-        public GraphStateBase()
-        {
-            id = Guid.NewGuid();
-            threadId = Guid.NewGuid();
-            graphStateEvents = new List<GraphStateEvent>();
-        }
-    }
 
     public class GraphRunState<T>
     {
@@ -141,6 +106,7 @@ namespace graphFlow.models
         public static readonly string GraphStateUpdate = "GraphStateUpdate";
     }
 
+    //TODO: move to new file
     public static class GraphRunExtensions
     {
         public static Guid AddCheckpoint<T>(this GraphRunState<T> graphState, T stateObject)

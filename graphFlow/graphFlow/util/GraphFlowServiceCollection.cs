@@ -1,12 +1,12 @@
 ﻿using ActionFlow;
-using graphFlow.models;
+using GraphFlow.models;
 using GraphFlow.flow;
 using GraphFlow.persistence;
 using GraphFlow.persistence.unSet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace graphFlow.util
+namespace GraphFlow.util
 {
     public static class GraphFlowServiceCollection
     {

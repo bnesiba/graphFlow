@@ -3,7 +3,7 @@ using GraphFlow.flow;
 using GraphFlow.persistence;
 using GraphFlow.persistence.models;
 
-namespace graphFlow.models
+namespace GraphFlow.models
 {
     public class ExecutableGraph<T> : ExecutableGraphBase
     {
@@ -139,22 +139,7 @@ namespace graphFlow.models
         public string? ErrorMessage { get; set; }
     }
 
-    //TODO: verify this even works ↓↓ 
-    //TODO: implement edge/node methods at base level or something? or just in both places?
-    public class ExecutableGraph : ExecutableGraphBase
-    {
-        private FlowState _flowState;
-        public Dictionary<string, GraphNode> graphNodes { get; set; }
-        public List<GraphEdge> graphEdges { get; set; }
-        public GraphNode startNode { get; set; }
-
-        public void ExecuteGraph()
-        {
-            _flowState.ResolveAction(Actions.GraphExecution(this));
-        }
-
-    }
-
+    //TODO: cleanup - stateless graphs no longer supported.
     public abstract class ExecutableGraphBase
     {
         public Guid? id { get; set; }
@@ -168,30 +153,5 @@ namespace graphFlow.models
         {
             this.id = id;
         }
-    }
-
-    //public class ExecutableGraphResult
-    //{
-    //    public ExecutableGraphBase graph {  get; set; }
-    //    public bool success { get; set; }
-    //}
-
-
-    //public interface IGraphStateObject<T>
-    //{
-    //    T startingValue { get; set; }
-    //    public T applyChanges()
-    //}
-
-    public abstract class GraphStateObject<T>
-    {
-        public required T InitialValue { get; set; }
-
-
-        public virtual T Reduce(T oldValue, T newValue)
-        {
-            return newValue;
-        }
-        //fields?
     }
 }
