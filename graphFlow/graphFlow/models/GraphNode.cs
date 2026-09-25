@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GraphFlow.models
 {
     public class GraphNode<T> : GraphNodeBase
@@ -12,12 +7,6 @@ namespace GraphFlow.models
         public List<GraphEdge<T>> edges { get; set; }
     }
 
-    //TODO: simplify. untyped graph probably unnecessary. 
-    public class GraphNode : GraphNodeBase
-    {
-        public Action nodeFunction { get; set; }
-        public List<GraphEdge> edges { get; set; }
-    }
     //TODO: simplify. untyped graph probably unnecessary. 
     public abstract class GraphNodeBase
     {

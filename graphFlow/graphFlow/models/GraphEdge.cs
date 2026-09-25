@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GraphFlow.models
 {
     public class GraphEdge<T> : GraphEdgeBase
@@ -12,14 +7,6 @@ namespace GraphFlow.models
 
         public Func<T, bool> evaluation {  get; set; }
 
-    }
-
-
-    //TODO: simplify, untyped graphs no longer supported.
-    public class GraphEdge : GraphEdgeBase
-    {
-        public GraphNode targetNode { get; set; }
-        public Func<bool> evaluation { get; set; }
     }
 
     //TODO: simplify, untyped graphs no longer supported.
