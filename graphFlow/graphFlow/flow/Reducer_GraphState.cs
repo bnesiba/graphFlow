@@ -53,7 +53,7 @@ namespace GraphFlow.flow
         public GraphRunState<T> GraphStateEvents_OnEdgeEvaluated_AddEdgeEvaluation(FlowAction<GraphEdgeResult<T>> edgeEvaluatedAction, GraphRunState<T> currentState)
         {
             var result = edgeEvaluatedAction.Parameters;
-            var graphEvent = new EdgeEvaluation(result.edgeExecuted.targetNode.id, result.shouldContinue, currentState.id);
+            var graphEvent = new EdgeEvaluation(result.EdgeExecuted.targetNode.id, result.shouldContinue, currentState.id);
             currentState.graphStateEvents.Add(graphEvent);
             return currentState;
         }

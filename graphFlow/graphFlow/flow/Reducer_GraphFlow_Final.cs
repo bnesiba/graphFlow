@@ -19,8 +19,8 @@ namespace GraphFlow.flow
             this.reduce(GraphStateEvents_OnGraphExecuted_AddGraphComplete, Actions.GraphExecuted<T>()),
             this.reduce(GraphStateEvents_OnNodeExecution_AddNodeStart, Actions.NodeExecution<T>()),
             this.reduce(GraphStateEvents_OnNodeExecuted_AddNodeComplete, Actions.NodeExecuted<T>()),
-            this.reduce(GraphStateEvents_OnEdgeEvaluated_AddEdgeEvaluation, Actions.EdgeEvaluated<T>()),
-            this.reduce(StateObject_OnNodeComplete_UpdateStateObject, Actions.NodeExecuted<T>()),
+            this.reduce(GraphStateEvents_OnEdgeEvaluation_AddEdgeStart, Actions.EdgeEvaluation<T>()),
+            this.reduce(GraphStateEvents_OnEdgeEvaluated_AddEdgeComplete, Actions.EdgeEvaluated<T>()),
             this.reduce(StateObject_OnUpdateFlowState_UpdateStateObject, Actions.UpdateFlowState<T>()),
         };
 
@@ -39,35 +39,42 @@ namespace GraphFlow.flow
             return currentState;
         }
 
-        public GraphRunState<T> GraphStateEvents_OnNodeExecution_AddNodeStart(FlowAction<GraphNode<T>> nodeExecutedAction, GraphRunState<T> currentState)
+        public GraphRunState<T> GraphStateEvents_OnNodeExecution_AddNodeStart(FlowAction<GraphNodeRequest<T>> nodeExecutedAction, GraphRunState<T> currentState)
         {
-
+            var nodeExecutionRequest = nodeExecutedAction.Parameters;
+            currentState.AddNodeStarted(nodeExecutionRequest);
             return currentState;
         }
+
         public GraphRunState<T> GraphStateEvents_OnNodeExecuted_AddNodeComplete(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphRunState<T> currentState)
         {
-
+            var nodeExecutionResult = nodeExecutedAction.Parameters;
+            currentState.AddNodeComplete(nodeExecutionResult);
             return currentState;
         }
-        public GraphRunState<T> GraphStateEvents_OnEdgeEvaluated_AddEdgeEvaluation(FlowAction<GraphEdgeResult<T>> edgeEvaluatedAction, GraphRunState<T> currentState)
+
+        public GraphRunState<T> GraphStateEvents_OnEdgeEvaluation_AddEdgeStart(FlowAction<GraphEdgeRequest<T>> edgeEvaluatedAction, GraphRunState<T> currentState)
         {
-
+            var edgeEvaluatonRequest = edgeEvaluatedAction.Parameters;
+            currentState.AddEdgeStarted(edgeEvaluatonRequest);
             return currentState;
         }
 
-        //TODO: consider removing stateobject from graphstate
+        public GraphRunState<T> GraphStateEvents_OnEdgeEvaluated_AddEdgeComplete(FlowAction<GraphEdgeResult<T>> edgeEvaluatedAction, GraphRunState<T> currentState)
+        {
+            var edgeEvaluationResult = edgeEvaluatedAction.Parameters;
+            currentState.AddEdgeCompleted(edgeEvaluationResult);
+            return currentState;
+        }
+
         public GraphRunState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<T> updateAction, GraphRunState<T> currentState)
         {
             var updatedStateObj = updateAction.Parameters;
-            currentState.stateObject = updatedStateObj;
-            return currentState;
-        }
+            if(updatedStateObj != null)
+            {
+                currentState.AddCheckpoint(updatedStateObj);
 
-        //TODO: remove or implement properly. This will blow up on partials, which we don't want.
-        public GraphRunState<T> StateObject_OnNodeComplete_UpdateStateObject(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphRunState<T> currentState)
-        {
-            var stateObj = nodeExecutedAction.Parameters.NodeOutput;
-            currentState.stateObject = stateObj;
+            }
             return currentState;
         }
     }

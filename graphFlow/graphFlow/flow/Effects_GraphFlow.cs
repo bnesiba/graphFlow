@@ -54,9 +54,10 @@ namespace GraphFlow.flow
             return Actions.GraphExecuted(graphResult);
         }
 
-        public FlowActionBase OnNodeExecution_ExecuteNode_ResolveNodeExecuted(FlowAction<GraphNode<T>> executeNodeAction)
+        public FlowActionBase OnNodeExecution_ExecuteNode_ResolveNodeExecuted(FlowAction<GraphNodeRequest<T>> executeNodeAction)
         {
-            GraphNode<T> nodeToExecute = executeNodeAction.Parameters;
+            GraphNode<T> nodeToExecute = executeNodeAction.Parameters.NodeExecuting;
+            var executionId = executeNodeAction.Parameters.ExecutionId;
             bool success = false;
             T? nodeResult = default;
             try
@@ -71,7 +72,13 @@ namespace GraphFlow.flow
                 //TODO: log and/or include error
                 success = false;
             }
-            GraphNodeResult<T> result = new GraphNodeResult<T> { NodeExecuted = nodeToExecute, Success = success };
+            GraphNodeResult<T> result = new GraphNodeResult<T> 
+            { 
+                ExecutionId = executionId, 
+                NodeExecuted = nodeToExecute, 
+                Success = success 
+            };
+
             if (success)
             {
                 result.NodeOutput = nodeResult;
@@ -108,29 +115,37 @@ namespace GraphFlow.flow
             return subtreeCompleteAction;
         }
 
-        public FlowActionBase OnEdgeEvaluation_EvaluateEdge_ResolveEdgeEvaluated(FlowAction<GraphEdge<T>> edgeEvaluationAction)
+        public FlowActionBase OnEdgeEvaluation_EvaluateEdge_ResolveEdgeEvaluated(FlowAction<GraphEdgeRequest<T>> edgeEvaluationAction)
         {
-            GraphEdge<T> edge = edgeEvaluationAction.Parameters;
+            GraphEdge<T> edge = edgeEvaluationAction.Parameters.EdgeExecuting;
+            var edgeExecutionId = edgeEvaluationAction.Parameters.ExecutionId;
             T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
             bool evalResult = edge.evaluation(stateData);
 
-            return Actions.EdgeEvaluated<T>(new GraphEdgeResult<T> { edgeExecuted = edge, shouldContinue = evalResult });
+            var edgeResult = new GraphEdgeResult<T>
+            {
+                ExecutionId = edgeExecutionId,
+                EdgeExecuted = edge,
+                ShouldContinue = evalResult,
+                Succeeded = true, //TODO: handle failed edges probably
+                ErrorMessage = null
+            };
+
+            return Actions.EdgeEvaluated(edgeResult);
         }
 
         public FlowActionBase OnEdgeEvaluated_IfShouldContinue_ResolveNodeExecution(FlowAction<GraphEdgeResult<T>> edgeEvaluationAction)
         {
+            //TODO: handle failure differently
             var edgeResult = edgeEvaluationAction.Parameters;
-            if (edgeResult.shouldContinue)
+            if (edgeResult.ShouldContinue)
             {
-                return Actions.NodeExecution(edgeResult.edgeExecuted.targetNode);
+                return Actions.NodeExecution(edgeResult.EdgeExecuted.targetNode);
             }
             else
             {
                 return Actions.EdgeNotFollowed(edgeResult);
             }
-
         }
-
-
     }
 }
