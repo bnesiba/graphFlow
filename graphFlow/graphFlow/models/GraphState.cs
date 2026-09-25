@@ -107,9 +107,15 @@ namespace GraphFlow.models
             var serializer = new GraphRunSerializer<T>();
             string serializedObject = serializer.SerializeGraphRun(stateObject);
             Guid checkpointId = Guid.NewGuid();
-            var updateTime = DateTime.UtcNow;
             graphState.CheckPoints.Add(checkpointId, serializedObject);
             graphState.CurrentCheckpoint = checkpointId;
+            return checkpointId;
+        }
+
+        public static Guid AddGraphUpdate<T>(this GraphRunState<T> graphState, T stateObject)
+        {
+            var updateTime = DateTime.UtcNow;
+            var checkpointId = graphState.AddCheckpoint(stateObject);
             graphState.GraphEvents.Add(new GraphEvent(checkpointId, GraphEventTypes.GraphStateUpdate, updateTime));
             return checkpointId;
         }
@@ -118,8 +124,8 @@ namespace GraphFlow.models
         {
             if(graphState.CurrentCheckpoint == Guid.Empty)
             {
-                //TODO: throw errors?
-                return;
+                //TODO: throw errors? this means no initial state was provided. 
+                //return;
             }
             var startTime = DateTime.UtcNow;
             var graphId = graphRequest.ExecutingGraph.id ?? Guid.Empty;//TODO: address? shouldn't be null
@@ -132,7 +138,7 @@ namespace GraphFlow.models
                 Input = graphState.CurrentCheckpoint
             };
             graphState.GraphRuns.Add(graphExeId, graphStarting);
-            graphState.GraphEvents.Add(new GraphEvent(graphStarting.Id, GraphEventTypes.GraphStarted, startTime));
+            graphState.GraphEvents.Add(new GraphEvent(graphStarting.ExecutionId, GraphEventTypes.GraphStarted, startTime));
         }
 
         public static void AddGraphComplete<T>(this GraphRunState<T> graphState, ExecutableGraphResult<T> graphResult)
@@ -154,7 +160,7 @@ namespace GraphFlow.models
             if(graphState.CurrentCheckpoint == Guid.Empty)
             {
                 //TODO: throw errors - this shouldn't happen but currently will until finished.
-                return;
+                //return;
             }
             var nodeRunning = graphNodeRequest.NodeExecuting;
             var startTime = DateTime.UtcNow;
@@ -167,7 +173,7 @@ namespace GraphFlow.models
                 StartTime = startTime
             };
             graphState.NodeRuns.Add(nodeStarting.ExecutionId, nodeStarting);
-            graphState.GraphEvents.Add(new GraphEvent(nodeStarting.Id, GraphEventTypes.NodeStarted, startTime));
+            graphState.GraphEvents.Add(new GraphEvent(nodeStarting.ExecutionId, GraphEventTypes.NodeStarted, startTime));
         }
 
         //TODO: handle node failure differently?
@@ -189,8 +195,8 @@ namespace GraphFlow.models
         {
             if (graphState.CurrentCheckpoint == Guid.Empty)
             {
-                //TODO: throw errors - this shouldn't happen but currently will until finished.
-                return;
+                //TODO: throw errors - this shouldn't be possible, since edges are from nodes
+                throw new Exception("Edge started without checkpoint somehow");
             }
             var startTime = DateTime.UtcNow;
             var edgeEvaluating = edgeEvalRequest.EdgeExecuting;
@@ -204,8 +210,8 @@ namespace GraphFlow.models
                 SourceNodeId = edgeEvaluating.id,
                 TargetNodeId = edgeEvaluating.targetNode.id
             };
-            graphState.EdgeRuns.Add(edgeRun.Id, edgeRun);
-            graphState.GraphEvents.Add(new GraphEvent(edgeRun.Id, GraphEventTypes.EdgeEvaluationStarted, startTime));
+            graphState.EdgeRuns.Add(edgeRun.ExecutionId, edgeRun);
+            graphState.GraphEvents.Add(new GraphEvent(edgeRun.ExecutionId, GraphEventTypes.EdgeEvaluationStarted, startTime));
         }
 
         public static void AddEdgeCompleted<T>(this GraphRunState<T> graphState, GraphEdgeResult<T> edgeCompleted)
@@ -217,7 +223,7 @@ namespace GraphFlow.models
             edgeRun.EndTime = completeTime;
             edgeRun.Succeeded = edgeCompleted.Succeeded;
             edgeRun.ErrorMessage = edgeCompleted.ErrorMessage;
-            graphState.GraphEvents.Add(new GraphEvent(edgeRun.Id, GraphEventTypes.EdgeEvaluationCompleted, completeTime));
+            graphState.GraphEvents.Add(new GraphEvent(edgeRun.ExecutionId, GraphEventTypes.EdgeEvaluationCompleted, completeTime));
         }
 
 

@@ -5,7 +5,7 @@ namespace GraphFlow.flow
 {
     public class GraphRunStateReducer<T> : IFlowStateReducer<GraphRunState<T>>
     {
-        public GraphRunState<T> InitialState => new GraphRunState<T>();
+        public GraphRunState<T> InitialState => new GraphRunState<T>(); //TODO: populate?
 
         public List<IFlowReductionBase<GraphRunState<T>>> Reductions => new List<IFlowReductionBase<GraphRunState<T>>>
         {
@@ -65,7 +65,7 @@ namespace GraphFlow.flow
             var updatedStateObj = updateAction.Parameters;
             if(updatedStateObj != null)
             {
-                currentState.AddCheckpoint(updatedStateObj);
+                currentState.AddGraphUpdate(updatedStateObj);
 
             }
             return currentState;
