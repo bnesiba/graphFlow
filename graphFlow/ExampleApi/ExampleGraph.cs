@@ -15,6 +15,7 @@ namespace ExampleApi
     //      v            v     |
     //   [Node3]      [Node4]  |
     //                   |     |
+    //                   v     |
     //                [Node5] --
 
     //Final State: shouldDoTheThing == true
