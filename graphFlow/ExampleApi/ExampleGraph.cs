@@ -18,8 +18,8 @@ namespace ExampleApi
     //                   v     |
     //                [Node5] --
 
-    //Final State: shouldDoTheThing == true
-    // (ExampleGraphState)
+    //Final State (ExampleGraphStateObject) when shouldDoTheThing == true
+    // 
     // {
     //  "nodeOutputs": {
     //    "Node1": "Node1RunNode1Run",
@@ -32,7 +32,7 @@ namespace ExampleApi
     //  "shouldDoTheThing": false
     //}
 
-public class ExampleGraph
+    public class ExampleGraph
     {
         private GraphBuilder<ExampleGraphStateObject> _graphBuilder;
 
