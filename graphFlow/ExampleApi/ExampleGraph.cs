@@ -4,30 +4,34 @@ using GraphFlow.util;
 
 namespace ExampleApi
 {
-    //        [Node1]
-    //           |
-    //           v
-    //        [Node2]
-    //         /    \
-    //        /      \
-    //   if(ShouldDoTheThing)
-    //    false        true
-    //      v            v
-    //   [Node3]      [Node4]
+    //        [Node1] <---------
+    //           |             |
+    //           v             |
+    //        [Node2]          |
+    //         /    \          |
+    //        /      \         |
+    //   if(ShouldDoTheThing)  |
+    //    false        true    |
+    //      v            v     |
+    //   [Node3]      [Node4]  |
+    //                   |     |
+    //                [Node5] --
 
-    //Final State:
+    //Final State: shouldDoTheThing == true
     // (ExampleGraphState)
-    //{
-    //    "nodeOutputs": {
-    //        "Node1": "Node1Run",
-    //        "Node2": "Node2DidTheThing",
-    //        "Node4": "Node4Reached"
-    //    },
-    //    "nodeCount": 3,
-    //    "shouldDoTheThing": true
+    // {
+    //  "nodeOutputs": {
+    //    "Node1": "Node1RunNode1Run",
+    //    "Node2": "Node2DidTheThingNode2DidNotDoTheThing",
+    //    "Node4": "Node4Reached",
+    //    "Node5": "Node5Run",
+    //    "Node3": "MadeItToNode3"
+    //  },
+    //  "nodeCount": 7,
+    //  "shouldDoTheThing": false
     //}
 
-    public class ExampleGraph
+public class ExampleGraph
     {
         private GraphBuilder<ExampleGraphStateObject> _graphBuilder;
 
@@ -44,10 +48,13 @@ namespace ExampleApi
             graph.AddNode("Node2", Node2Function);
             graph.AddNode("Node3", Node3Function);
             graph.AddNode("Node4", Node4Function);
+            graph.AddNode("Node5", Node5Function);
 
             graph.AddEdge("Node1", "Node2");
             graph.AddEdge("Node2", "Node3", ShouldNotDoTheThing);
             graph.AddEdge("Node2", "Node4", ShouldDoTheThing);
+            graph.AddEdge("Node4", "Node5");
+            graph.AddEdge("Node5", "Node1");
 
             graph.SetStartNode("Node1");
             return graph;
@@ -90,6 +97,16 @@ namespace ExampleApi
         {
             injectedState.NodeOutputs.TryGetValue("Node4", out string? node4Value);
             injectedState.NodeOutputs["Node4"] = node4Value + "Node4Reached";
+            injectedState.NodeCount++;
+            return injectedState;
+        }
+
+        public ExampleGraphStateObject Node5Function(ExampleGraphStateObject injectedState)
+        {
+            injectedState.ShouldDoTheThing = !injectedState.ShouldDoTheThing;
+
+            injectedState.NodeOutputs.TryGetValue("Node5", out string? node1Value);
+            injectedState.NodeOutputs["Node5"] = node1Value + "Node5Run";
             injectedState.NodeCount++;
             return injectedState;
         }
