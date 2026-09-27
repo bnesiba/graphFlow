@@ -1,10 +1,6 @@
 ﻿using ActionFlow.Models;
-using graphFlow.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GraphFlow.models;
+using GraphFlow.persistence.models;
 
 namespace GraphFlow.flow
 {
@@ -12,24 +8,22 @@ namespace GraphFlow.flow
     public static class Actions
     {
         public static FlowAction<T> UpdateFlowState<T>(T? initialState = default) => new FlowAction<T> { Name = "InitializeFlowState", Parameters = initialState };
-        public static FlowAction<ExecutableGraph> GraphExecution(ExecutableGraph? graph = null) => new FlowAction<ExecutableGraph> { Name = "ExecuteGraphStateless", Parameters = graph };
-        public static FlowAction<ExecutableGraph<T>> GraphExecution<T>(ExecutableGraph<T>? graph = null) => new FlowAction<ExecutableGraph<T>> { Name = "ExecuteGraph", Parameters = graph};
+        public static FlowAction<ExecutableGraphRequest<T>> GraphExecution<T>(ExecutableGraph<T>? graph = null) => new FlowAction<ExecutableGraphRequest<T>> { Name = "ExecuteGraph", Parameters = new ExecutableGraphRequest<T> { GraphExecutionId = Guid.NewGuid(), ExecutingGraph = graph } };
 
-        public static FlowAction<ExecutableGraph> GraphExecuted(ExecutableGraph? graph = null, bool success = false) => new FlowAction<ExecutableGraph> { Name = "GraphExecutedStateless", Parameters = graph };
-        public static FlowAction<ExecutableGraph<T>> GraphExecuted<T>(ExecutableGraph<T>? graph = null, bool success = false) => new FlowAction<ExecutableGraph<T>> { Name = "GraphExecuted", Parameters = graph };
+        public static FlowAction<ExecutableGraphResult<T>> GraphExecuted<T>(ExecutableGraphResult<T>? graph = null, bool success = false) => new FlowAction<ExecutableGraphResult<T>> { Name = "GraphExecuted", Parameters = graph };
 
-        public static FlowAction<GraphNode> NodeExecution(GraphNode? node = null) => new FlowAction<GraphNode> { Name = "ExcuteNodeStateless", Parameters = node };
-        public static FlowAction<GraphNode<T>> NodeExecution<T>(GraphNode<T>? node = null) => new FlowAction<GraphNode<T>> { Name = "ExecuteNode", Parameters = node };
+        public static FlowAction<GraphNodeRequest<T>> NodeExecution<T>(GraphNode<T>? node = null) => new FlowAction<GraphNodeRequest<T>> { Name = "ExecuteNode", Parameters = new GraphNodeRequest<T> { ExecutionId = Guid.NewGuid(), NodeExecuting = node } };
 
-        public static FlowAction<GraphNodeResult> NodeExecuted(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeExecutedStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeExecuted<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeExecuted", Parameters = result };
 
-        public static FlowAction<GraphNodeResult> NodeSubtreeComplete(GraphNodeResult? result = null) => new FlowAction<GraphNodeResult> { Name = "NodeSubtreeCompleteStateless", Parameters = result };
         public static FlowAction<GraphNodeResult<T>> NodeSubtreeComplete<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeSubtreeComplete", Parameters = result };
+        
+        public static FlowAction<GraphEdgeRequest<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdgeRequest<T>> { Name = "EvaluateEdge", Parameters = new GraphEdgeRequest<T> { ExecutionId = Guid.NewGuid(), EdgeExecuting = edge } };
+        
+        public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
+        
+        public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
 
-        public static FlowAction<GraphEdge> EdgeEvaluation(GraphEdge? edge = null) => new FlowAction<GraphEdge> { Name = "EvaluateEdgeStateless", Parameters = edge };
-        public static FlowAction<GraphEdge<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdge<T>> { Name = "EvaluateEdge", Parameters = edge };
-        public static FlowAction<GraphEdge<T>> EdgeEndOfBranch<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdge<T>> { Name = "EndOfBranch", Parameters = edge };
-
+        public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };
     }
 }

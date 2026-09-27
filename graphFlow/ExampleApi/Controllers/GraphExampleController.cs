@@ -1,6 +1,7 @@
 ﻿using ExampleApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ExampleApi.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using graphFlow.models;
+﻿using GraphFlow.models;
 using GraphFlow.flow;
 
 namespace ExampleApi.Models
