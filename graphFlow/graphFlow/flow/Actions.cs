@@ -18,12 +18,12 @@ namespace GraphFlow.flow
 
         public static FlowAction<GraphNodeResult<T>> NodeSubtreeComplete<T>(GraphNodeResult<T>? result = null) => new FlowAction<GraphNodeResult<T>> { Name = "NodeSubtreeComplete", Parameters = result };
         
-        public static FlowAction<GraphEdgeRequest<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null) => new FlowAction<GraphEdgeRequest<T>> { Name = "EvaluateEdge", Parameters = new GraphEdgeRequest<T> { ExecutionId = Guid.NewGuid(), EdgeExecuting = edge } };
+        public static FlowAction<GraphEdgeRequest<T>> EdgeEvaluation<T>(GraphEdge<T>? edge = null, GraphNode<T>? sourceNode = null, int index = 0) => new FlowAction<GraphEdgeRequest<T>> { Name = "EvaluateEdge", Parameters = new GraphEdgeRequest<T> { ExecutionId = Guid.NewGuid(), SourceNode = sourceNode,  EdgeExecuting = edge, EdgeIndex = index } };
         
         public static FlowAction<GraphEdgeResult<T>> EdgeEvaluated<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeEvaluated", Parameters = edge };
         
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
-
+        public static FlowAction NoEdgesFollowed() => new FlowAction { Name = "NoEdgesFolowed" };
         public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };
     }
 }

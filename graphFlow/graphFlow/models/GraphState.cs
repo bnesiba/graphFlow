@@ -62,7 +62,7 @@ namespace GraphFlow.models
         public Guid Id { get; init; } = Guid.NewGuid();
         public Guid ExecutionId { get; init; }
         public string EdgeName { get; set; }
-        public string TargetEdgeName { get; set; }
+        public string TargetNodeName { get; set; }
         public Guid SourceNodeId { get; init; }
         public Guid TargetNodeId { get; init; }
         public DateTime StartTime { get; set; }
@@ -206,7 +206,7 @@ namespace GraphFlow.models
                 StartTime = startTime,
                 Input = graphState.CurrentCheckpoint,
                 EdgeName = edgeEvaluating.name,
-                TargetEdgeName = edgeEvaluating.targetNode.name,
+                TargetNodeName = edgeEvaluating.targetNode.name,
                 SourceNodeId = edgeEvaluating.id,
                 TargetNodeId = edgeEvaluating.targetNode.id
             };

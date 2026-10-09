@@ -14,7 +14,6 @@ namespace GraphFlow.models
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T>? startNode { get; set; }
-        public PersistenceManager<T> graphPersistence { get {  return _persistenceManager; } }//TODO: right place for this?
 
         public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData,FlowStateData<GraphRunState<T>> graphStateData, PersistenceManager<T> persistence):base()
         {
