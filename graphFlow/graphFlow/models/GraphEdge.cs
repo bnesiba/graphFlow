@@ -20,6 +20,8 @@ namespace GraphFlow.models
     public class GraphEdgeResult<T>
     {
         public Guid ExecutionId { get; set; }
+        public int EdgeIndex { get; set; }
+        public GraphNode<T> SourceNode { get; set; }
         public GraphEdge<T> EdgeExecuted { get; set; }
         public bool ShouldContinue { get; set; }
         public bool? Succeeded { get; set; }
@@ -29,6 +31,8 @@ namespace GraphFlow.models
 
     public class GraphEdgeRequest<T>
     {
+        public GraphNode<T> SourceNode { get; set; }
+        public int EdgeIndex { get; set; }
         public Guid ExecutionId { get; set; }
         public GraphEdge<T> EdgeExecuting { get; set; }
     }

@@ -91,6 +91,7 @@ namespace ExampleApi
             injectedState.NodeOutputs.TryGetValue("Node3", out string? node3Value);
             injectedState.NodeOutputs["Node3"] = node3Value + "MadeItToNode3";
             injectedState.NodeCount++;
+            injectedState.ShouldDoTheThing = true;
             return injectedState;
         }
 
