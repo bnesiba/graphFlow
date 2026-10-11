@@ -1,7 +1,8 @@
 ﻿using ActionFlow;
-using GraphFlow.models;
 using GraphFlow.flow;
+using GraphFlow.models;
 using GraphFlow.persistence;
+using GraphFlow.persistence.InMemory;
 using GraphFlow.persistence.unSet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -27,6 +28,7 @@ namespace GraphFlow.util
         public static IServiceCollection UseInMemoryPersistence<T>(this IServiceCollection services)
         {
             services.RemoveAll<IGraphFlowPersistence<T>>();
+            services.AddSingleton<IGraphFlowPersistence<T>, InMemoryFlowPersistence<T>>();
             services.UseEffects<GraphPersistenceEffects<T>>();
             return services;
         }

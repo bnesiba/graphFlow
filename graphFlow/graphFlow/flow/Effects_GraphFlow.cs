@@ -18,7 +18,7 @@ namespace GraphFlow.flow
         {
            this.effect(OnGraphExecution_ExecuteStartNode_ResolveGraphExecuted, Actions.GraphExecution<T>()),
            this.effect(OnNodeExecution_ExecuteNode_ResolveNodeExecuted, Actions.NodeExecution<T>()),
-           this.effect(OnNodeExecuted_EvaluateEdges_ResolveNodeSubTreeComplete, Actions.NodeExecuted<T>()),
+           this.effect(OnNodeExecuted_IfEdges_ResolveEdgeEvaluation, Actions.NodeExecuted<T>()),
            this.effect(OnEdgeEvaluation_EvaluateEdge_ResolveEdgeEvaluated, Actions.EdgeEvaluation<T>()),
            this.effect(OnEdgeEvaluated_IfShouldContinue_ResolveNodeExecution, Actions.EdgeEvaluated<T>()),
            this.effect(OnEdgeNotFollowed_IfEdgesRemain_ResolveEdgeEvaluation, Actions.EdgeNotFollowed<T>())
@@ -88,7 +88,7 @@ namespace GraphFlow.flow
             return Actions.NodeExecuted(result);
         }
 
-        public FlowActionBase OnNodeExecuted_EvaluateEdges_ResolveNodeSubTreeComplete(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
+        public FlowActionBase OnNodeExecuted_IfEdges_ResolveEdgeEvaluation(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
         {
             var subtreeCompleteAction = Actions.NodeSubtreeComplete(nodeExecutedAction.Parameters);
 
