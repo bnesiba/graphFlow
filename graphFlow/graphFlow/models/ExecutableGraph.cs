@@ -11,6 +11,8 @@ namespace GraphFlow.models
         private FlowStateData<T> _flowStateData;
         private FlowStateData<GraphRunState<T>> _graphStateData;
         private PersistenceManager<T> _persistenceManager;
+
+        public event EventHandler<GraphProgressEventArgs<T>> GraphProgress;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T>? startNode { get; set; }

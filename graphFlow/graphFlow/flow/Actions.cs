@@ -5,6 +5,7 @@ using GraphFlow.persistence.models;
 namespace GraphFlow.flow
 {
     //TODO: update action/effects implementation so that inputs can be non-nullable without breaking effects
+    //TODO: split action out by feature?
     public static class Actions
     {
         public static FlowAction<T> UpdateFlowState<T>(T? initialState = default) => new FlowAction<T> { Name = "InitializeFlowState", Parameters = initialState };
@@ -24,6 +25,11 @@ namespace GraphFlow.flow
         
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
         public static FlowAction NoEdgesFollowed() => new FlowAction { Name = "NoEdgesFolowed" };
+
+        public static FlowAction<GraphProgressEventArgs<T>> GraphProgressUpdate<T>(GraphProgressEventArgs<T>? graphProgressUpdate = null) => new FlowAction<GraphProgressEventArgs<T>> { Name = "GraphProgressUpdate", Parameters = graphProgressUpdate };
+        
+        public static FlowAction<GraphProgressEventArgs<T>> GraphProgressUpdated<T>(GraphProgressEventArgs<T>? graphProgressUpdated = null) => new FlowAction<GraphProgressEventArgs<T>> { Name = "GraphProgressUpdated", Parameters = graphProgressUpdated };
+
         public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };
     }
 }
