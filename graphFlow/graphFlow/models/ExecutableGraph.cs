@@ -28,7 +28,7 @@ namespace GraphFlow.models
 
         public GraphExecutionData<T> ExecuteGraph(T graphInput)
         {
-            _flowState.ResolveAction(Actions.UpdateFlowState(graphInput));
+            _flowState.ResolveAction(Actions.UpdateFlowState(graphInput));//TODO: NOW HERE - this will need to happen a different way to parallelize graphs.
             return ExecuteGraph();
         }
 
@@ -41,7 +41,7 @@ namespace GraphFlow.models
             }
             _flowState.ResolveAction(Actions.GraphExecution(this));
             T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
-            GraphRunState<T> graphState = _graphStateData.CurrentState(GraphFlowSelectors<T>.GetGraphState);
+            GraphRunState<T> graphState = _graphStateData.CurrentState(GraphFlowSelectors<T>.GetGraphState); 
             GraphExecutionData<T> graphRun = new GraphExecutionData<T>()
             {
                 GraphData = graphState,

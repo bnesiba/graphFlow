@@ -1,13 +1,18 @@
 ﻿using GraphFlow.checkpointing;
+using System.Collections.Concurrent;
 
 namespace GraphFlow.models
 {
+    public class GraphOrchestrationState<T>
+    {
+        public ConcurrentDictionary<Guid, GraphRunState<T>> GraphRuns { get; set; }
+    }
 
     public class GraphRunState<T>
     {
         public Guid Id { get; init; }
         public Guid ThreadId { get; init; }
-
+        public Guid GraphExecutionId { get; set; } = Guid.Empty;
         public Dictionary<Guid, GraphRun> GraphRuns { get; set; }
         public Dictionary<Guid, NodeRun> NodeRuns { get; set; }
         public Dictionary<Guid, EdgeRun> EdgeRuns { get; set; }

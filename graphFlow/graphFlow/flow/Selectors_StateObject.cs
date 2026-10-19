@@ -1,4 +1,5 @@
 ﻿using ActionFlow.Models;
+using GraphFlow.models;
 
 namespace GraphFlow.flow
 {
@@ -13,4 +14,14 @@ namespace GraphFlow.flow
             return state;
         }
     }
+
+
+    public static class GraphStateSelectors<T>
+    {
+        public static FlowDataSelector<Dictionary<Guid, GraphRunState<T>>, GraphRunState<T>> SelectByExecution(Guid executionId)
+        {
+
+            return new FlowDataSelector<Dictionary<Guid, GraphRunState<T>>, GraphRunState<T>>( (state) => state.GetValueOrDefault(executionId));
+        }
+    }    
 }
