@@ -14,7 +14,7 @@ namespace GraphFlow.models
         public string name { get; set; }
     }
 
-    public class GraphNodeResult<T>
+    public class GraphNodeResult<T> : GraphOrchestrationObject
     {
         public Guid ExecutionId { get; set; }
         public GraphNode<T> NodeExecuted { get; set; }
@@ -23,7 +23,7 @@ namespace GraphFlow.models
         public string? ErrorMessage { get; set; }
     }
 
-    public class GraphNodeRequest<T>
+    public class GraphNodeRequest<T> : GraphOrchestrationObject
     {
         public GraphNode<T> NodeExecuting { get; set; }
         public Guid ExecutionId { get; set; }
