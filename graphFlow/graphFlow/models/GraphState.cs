@@ -3,7 +3,12 @@ using System.Collections.Concurrent;
 
 namespace GraphFlow.models
 {
-    public class GraphOrchestrationState<T>: ConcurrentDictionary<Guid, GraphRunState<T>>
+    public class GraphFlowState<T> : ConcurrentDictionary<Guid, T>
+    {
+        //this is to simplify the code because ConcurrentDictionary<Guid, T> is unwieldy.
+    }
+
+    public class GraphOrchestrationState<T>: GraphFlowState<GraphRunState<T>>
     {
         //this is to simplify the code because ConcurrentDictionary<Guid, GraphRunState<T>> is unwieldy.
     }
@@ -12,15 +17,10 @@ namespace GraphFlow.models
     {
         public Guid GraphExecutionId { get; set; }
     }
-
-    public class GraphFlowState<T>: ConcurrentDictionary<Guid, T>
-    {
-        //this is to simplify the code because ConcurrentDictionary<Guid, T> is unwieldy.
-    }
-
+  
     public class StateUpdateRequest<T> : GraphOrchestrationObject
     {
-        T NewState { get; set; }
+        public T NewState { get; set; }
     }
 
     public class GraphRunState<T>

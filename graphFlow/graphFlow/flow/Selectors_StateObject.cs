@@ -18,10 +18,10 @@ namespace GraphFlow.flow
 
     public static class GraphStateSelectors<T>
     {
-        public static FlowDataSelector<Dictionary<Guid, GraphRunState<T>>, GraphRunState<T>> SelectByExecution(Guid executionId)
+        public static FlowDataSelector<GraphOrchestrationState<T>, GraphRunState<T>> SelectByExecution(Guid executionId)
         {
 
-            return new FlowDataSelector<Dictionary<Guid, GraphRunState<T>>, GraphRunState<T>>( (state) => state.GetValueOrDefault(executionId));
+            return new FlowDataSelector<GraphOrchestrationState<T>, GraphRunState<T>>( (state) => state.GetValueOrDefault(executionId));
         }
     }    
 }
