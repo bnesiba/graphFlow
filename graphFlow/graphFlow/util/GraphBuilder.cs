@@ -13,10 +13,10 @@ namespace GraphFlow.util
     {
         private FlowState _flowState;
         private FlowStateData<T> _flowStateData;
-        private FlowStateData<GraphRunState<T>> _graphStateData;
+        private FlowStateData<GraphOrchestrationState<T>> _graphStateData;
         private PersistenceManager<T> _persistenceManager;
 
-        public GraphBuilder(FlowState flowState, FlowStateData<T> flowStateData, FlowStateData<GraphRunState<T>> graphStateData, PersistenceManager<T> persistence)
+        public GraphBuilder(FlowState flowState, FlowStateData<T> flowStateData, FlowStateData<GraphOrchestrationState<T>> graphStateData, PersistenceManager<T> persistence)
         {
             _flowState = flowState;
             _flowStateData = flowStateData;

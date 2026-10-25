@@ -16,8 +16,8 @@ namespace GraphFlow.util
         {
             services.UseFlowState();
             services.UseEffects<GraphFlowEffects<T>>();
-            services.UseReducer<StateObjectReducer<T>, T>();
-            services.UseReducer<GraphRunStateReducer<T>, GraphRunState<T>>();
+            services.UseReducer<StateObjectReducer<T>, GraphFlowState<T>>();
+            services.UseReducer<GraphRunStateReducer<T>, GraphOrchestrationState<T>>();
             services.AddSingleton<IGraphFlowPersistence<T>, NotImplementedFlowPersistence<T>>();
             services.AddScoped<GraphBuilder<T>>();
             services.AddScoped<PersistenceManager<T>>();

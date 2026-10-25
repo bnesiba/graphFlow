@@ -60,14 +60,10 @@ namespace GraphFlow.flow
             return currentState;
         }
 
-        public GraphOrchestrationState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<T> updateAction, GraphOrchestrationState<T> currentState)
+        public GraphOrchestrationState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<StateUpdateRequest<T>> updateAction, GraphOrchestrationState<T> currentState)
         {
             var updatedStateObj = updateAction.Parameters;
-            if(updatedStateObj != null)
-            {
-                currentState.AddGraphUpdate(updatedStateObj);
-
-            }
+            currentState.AddGraphUpdate(updatedStateObj.GraphExecutionId, updatedStateObj.NewState);
             return currentState;
         }
     }
