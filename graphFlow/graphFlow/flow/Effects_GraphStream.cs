@@ -23,7 +23,6 @@ namespace GraphFlow.flow
            this.effect(OnNodeExecuted_ResolveGraphExecutionProgress, Actions.NodeExecuted<T>()),
            this.effect(OnEdgeEvaluation_ResolveGraphExecutionProgress, Actions.EdgeEvaluation<T>()),
            this.effect(OnEdgeEvaluated_ResolveGraphExecutionProgress, Actions.EdgeEvaluated<T>()),
-           this.effect(OnGraphExecuted_ResolveGraphExecutionProgress, Actions.GraphExecuted<T>()),
            this.effect(OnUpdateFlowState_ResolveGraphExecutionProgress, Actions.UpdateFlowState<T>()),
            this.effect(OnGraphExecutionProgress_ReportGraphProgress_ResolveProgressReported, Actions.GraphExecutionProgress<T>())
         };
@@ -85,13 +84,6 @@ namespace GraphFlow.flow
         {
             var edgeComplete = edgeEvaluationAction.Parameters;
             var graphProgress = GenerateEventArgs(GraphProgressType.EdgeComplete, edgeComplete.EdgeExecuted.name, edgeComplete.GraphExecutionId);
-            return Actions.GraphExecutionProgress(graphProgress);
-        }
-
-        public FlowActionBase OnGraphExecuted_ResolveGraphExecutionProgress(FlowAction<ExecutableGraphResult<T>> edgeEvaluationAction)
-        {
-            Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
-            var graphProgress = GenerateEventArgs(GraphProgressType.GraphComplete, "GraphEnd", graphExecutionId);
             return Actions.GraphExecutionProgress(graphProgress);
         }
 

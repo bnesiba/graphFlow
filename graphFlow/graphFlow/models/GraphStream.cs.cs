@@ -2,7 +2,7 @@
 {
     public class GraphStreamState<T> : GraphFlowState<ExecutableGraph<T>>
     {
-        //this is to simplify the code because ConcurrentDictionary<Guid, ExecutableGraph<T>> is unwieldy.
+        //this is to simplify the code because ConcurrentDictionary<Guid, ExecutableGraph<T>> is unwieldy and harder to read.
     }
 
     public enum GraphProgressType
