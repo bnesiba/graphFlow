@@ -5,7 +5,7 @@ namespace GraphFlow.flow
 {
     public class GraphStreamReducer<T> : IFlowStateReducer<GraphStreamState<T>>
     {
-        public GraphStreamState<T> InitialState => new GraphStreamState<T>(); //TODO: populate?
+        public GraphStreamState<T> InitialState => new GraphStreamState<T>();
 
         public List<IFlowReductionBase<GraphStreamState<T>>> Reductions => new List<IFlowReductionBase<GraphStreamState<T>>>
         {

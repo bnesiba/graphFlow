@@ -45,7 +45,6 @@ namespace GraphFlow.flow
         }
 
         //Effect Methods
-
         public FlowActionBase OnGraphExecutionProgress_ReportGraphProgress_ResolveProgresReported(FlowAction<GraphProgressEventArgs<T>> graphProgressAction)
         {
             var progressInfo = graphProgressAction.Parameters;
@@ -58,43 +57,34 @@ namespace GraphFlow.flow
         {
             Guid graphExecutionId = executeGraphAction.Parameters.GraphExecutionId;
             var graphProgress = GenerateEventArgs(GraphEventType.GraphStart,"GraphStart", graphExecutionId);
-
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
         public FlowActionBase OnNodeExecution_ResolveGraphExecutionProgress(FlowAction<GraphNodeRequest<T>> executeNodeAction)
         {
-            Guid graphExecutionId = executeNodeAction.Parameters.GraphExecutionId;
-            string objectName = executeNodeAction.Parameters.NodeExecuting.name;
-            var graphProgress = GenerateEventArgs(GraphEventType.NodeStart, objectName, graphExecutionId);
-
+            var nodeExecution = executeNodeAction.Parameters;
+            var graphProgress = GenerateEventArgs(GraphEventType.NodeStart, nodeExecution.NodeExecuting.name, nodeExecution.GraphExecutionId);
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
         public FlowActionBase OnNodeExecuted_ResolveGraphExecutionProgress(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
         {
-            Guid graphExecutionId = nodeExecutedAction.Parameters.GraphExecutionId;
-            string objectName = nodeExecutedAction.Parameters.NodeExecuted.name;
-            var graphProgress = GenerateEventArgs(GraphEventType.NodeComplete, objectName, graphExecutionId);
-
+            var nodeComplete = nodeExecutedAction.Parameters;
+            var graphProgress = GenerateEventArgs(GraphEventType.NodeComplete, nodeComplete.NodeExecuted.name, nodeComplete.GraphExecutionId);
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
         public FlowActionBase OnEdgeEvaluation_ResolveGraphExecutionProgress(FlowAction<GraphEdgeRequest<T>> edgeEvaluationAction)
         {
-            Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
-            string objectName = edgeEvaluationAction.Parameters.EdgeExecuting.name;
-            var graphProgress = GenerateEventArgs(GraphEventType.EdgeStart, objectName, graphExecutionId);
-
+            var edgeEvaluation = edgeEvaluationAction.Parameters;
+            var graphProgress = GenerateEventArgs(GraphEventType.EdgeStart, edgeEvaluation.EdgeExecuting.name, edgeEvaluation.GraphExecutionId);
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
         public FlowActionBase OnEdgeEvaluated_ResolveGraphExecutionProgress(FlowAction<GraphEdgeResult<T>> edgeEvaluationAction)
         {
-            Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
-            string objectName = edgeEvaluationAction.Parameters.EdgeExecuted.name;
-            var graphProgress = GenerateEventArgs(GraphEventType.EdgeComplete, objectName, graphExecutionId);
-
+            var edgeComplete = edgeEvaluationAction.Parameters;
+            var graphProgress = GenerateEventArgs(GraphEventType.EdgeComplete, edgeComplete.EdgeExecuted.name, edgeComplete.GraphExecutionId);
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
@@ -102,7 +92,6 @@ namespace GraphFlow.flow
         {
             Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
             var graphProgress = GenerateEventArgs(GraphEventType.GraphComplete, "GraphEnd", graphExecutionId);
-
             return Actions.GraphExecutionProgress(graphProgress);
         }
 
@@ -110,7 +99,6 @@ namespace GraphFlow.flow
         {
             Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
             var graphProgress = GenerateEventArgs(GraphEventType.StateChange, "StateUpdate", graphExecutionId);
-
             return Actions.GraphExecutionProgress(graphProgress);
         }
     }

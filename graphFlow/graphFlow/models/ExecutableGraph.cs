@@ -50,7 +50,6 @@ namespace GraphFlow.models
             _graphProgress += progressHandler;
             var output =  ExecuteGraph(graphInput, execution);
             _graphProgress -= progressHandler;
-
             return output;
         }
 

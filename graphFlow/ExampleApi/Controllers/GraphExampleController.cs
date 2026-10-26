@@ -74,14 +74,12 @@ namespace ExampleApi.Controllers
             });
 
             var output = new StreamTestExampleObject { StreamedCheckpoints = checkpoints, GraphData = result, };
-
             return StatusCode(200, output);
         }
 
         public class StreamTestExampleObject
         {
             public List<string> StreamedCheckpoints { get; set; }
-
             public GraphExecutionData<ExampleGraphStateObject> GraphData { get; set; }
         }
     }
