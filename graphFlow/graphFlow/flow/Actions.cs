@@ -23,6 +23,8 @@ namespace GraphFlow.flow
         
         public static FlowAction<GraphEdgeResult<T>> EdgeNotFollowed<T>(GraphEdgeResult<T>? edge = null) => new FlowAction<GraphEdgeResult<T>> { Name = "EdgeSubtreeComplete", Parameters = edge };
         public static FlowAction NoEdgesFollowed() => new FlowAction { Name = "NoEdgesFolowed" };//TODO: add graphExecutionGuid to make this action usable/tracable/etc. 
+        public static FlowAction<GraphProgressEventArgs<T>> GraphExecutionProgress<T>(GraphProgressEventArgs<T>? graphProgress = null) => new FlowAction<GraphProgressEventArgs<T>> { Name = "GraphExecutionProgress", Parameters = graphProgress };
+        public static FlowAction<GraphReportResult> GraphProgressReported(Guid? graphExecutionId = null, Guid? currentCheckpoint = null) => new FlowAction<GraphReportResult> { Name = "GraphProgressReported", Parameters = new GraphReportResult { GraphExecutionId = graphExecutionId ?? Guid.Empty, CurrentCheckpoint = currentCheckpoint ?? Guid.Empty } };
         public static FlowAction<GraphExecutionData<T>> RunPersisted<T>(GraphExecutionData<T>? record = null) => new FlowAction<GraphExecutionData<T>> { Name = "RunPersisted", Parameters = record };
     }
 }

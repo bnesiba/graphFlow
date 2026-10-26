@@ -10,6 +10,7 @@ namespace GraphFlow.models
         private FlowState _flowState;
         private FlowStateData<GraphFlowState<T>> _flowStateData;
         private FlowStateData<GraphOrchestrationState<T>> _graphStateData;
+        private event EventHandler<GraphProgressEventArgs<T>> _graphProgress;
         private PersistenceManager<T> _persistenceManager;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
@@ -26,12 +27,31 @@ namespace GraphFlow.models
             startNode = null;
         }
 
-        public GraphExecutionData<T> ExecuteGraph(T graphInput)
+        public GraphExecutionData<T> ExecuteGraph(T graphInput, Guid? executionGuid = null)
         {
-            Guid execution = Guid.NewGuid();
+            Guid execution = executionGuid ?? Guid.NewGuid();
             var updateObj = new StateUpdateRequest<T>{ GraphExecutionId = execution, NewState = graphInput };
             _flowState.ResolveAction(Actions.UpdateFlowState(updateObj));
             return ExecuteGraph(execution);
+        }
+
+        public GraphExecutionData<T> StreamGraph(T graphInput, Action<GraphProgressEventArgs<T>> streamDelegate)
+        {
+            Guid execution = Guid.NewGuid();
+
+            EventHandler<GraphProgressEventArgs<T>> progressHandler = (sender, args) =>
+            {
+                if (args.GraphExecutionId == execution)
+                {
+                    streamDelegate(args);
+                }
+            };
+
+            _graphProgress += progressHandler;
+            var output =  ExecuteGraph(graphInput, execution);
+            _graphProgress -= progressHandler;
+
+            return output;
         }
 
         private GraphExecutionData<T> ExecuteGraph(Guid? executionGuid = null)
@@ -122,6 +142,11 @@ namespace GraphFlow.models
             {
                 //TODO: errors or something
             }
+        }
+
+        internal void ReportGraphProgress(GraphProgressEventArgs<T> e)
+        {
+            _graphProgress?.Invoke(null, e);
         }
 
         private bool _AlwaysRunEdge<T>(T stateObject)
