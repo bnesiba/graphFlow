@@ -12,7 +12,7 @@ namespace GraphFlow.util
     public static class GraphFlowServiceCollection
     {
         public static IServiceCollection UseGraphFlow<T>(this IServiceCollection services)
-            where T : class, IDefaultValueHaver<T>
+            where T : class
         {
             services.UseFlowState();
             services.UseEffects<GraphFlowEffects<T>>();

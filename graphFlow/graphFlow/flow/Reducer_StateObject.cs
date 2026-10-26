@@ -30,9 +30,4 @@ namespace GraphFlow.flow
             return currentState;
         }
     }
-
-    public interface IDefaultValueHaver<T> where T : IDefaultValueHaver<T>
-    {
-        static abstract T DefaultValue();
-    }
 }

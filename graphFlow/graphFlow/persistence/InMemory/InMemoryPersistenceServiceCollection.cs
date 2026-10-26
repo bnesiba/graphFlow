@@ -14,7 +14,7 @@ namespace GraphFlow.persistence.InMemory
     public static class InMemoryPersistenceServiceCollection
     {
         public static IServiceCollection UseInMemoryPersistence<T>(this IServiceCollection services)
-            where T : class, IDefaultValueHaver<T>
+            where T : class
         {
             services.AddSingleton<InMemoryFlowPersistence<T>>();
             services.UseEffects<GraphPersistenceEffects<T>>();

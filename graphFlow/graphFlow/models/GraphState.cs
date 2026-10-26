@@ -26,7 +26,7 @@ namespace GraphFlow.models
     public class GraphRunState<T>
     {
         public Guid Id { get; init; }
-        public Guid ThreadId { get; init; }
+        public Guid ThreadId { get; init; }//TODO: remove?
         public Guid GraphExecutionId { get; set; } = Guid.Empty;
         public Dictionary<Guid, GraphRun> GraphRuns { get; set; }
         public Dictionary<Guid, NodeRun> NodeRuns { get; set; }
@@ -250,38 +250,46 @@ namespace GraphFlow.models
 
     public static class GraphOrchestrationStateExtensions
     {
+        private static GraphRunState<T> GetValueOrCreateDefault<T>(this GraphOrchestrationState<T> orchState, Guid GraphExecutionId)
+        {
+            if(!orchState.ContainsKey(GraphExecutionId)) 
+            {
+                orchState[GraphExecutionId] = new GraphRunState<T>();
+            }
+            return orchState[GraphExecutionId];
+        }
+
         public static Guid AddCheckpoint<T>(this GraphOrchestrationState<T> orchState, Guid graphRunExecution, T stateObject)
         {
-            var graphRun = orchState.GetValueOrDefault(graphRunExecution);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphRunExecution);//TODO: throw here or null check?
             return graphRun.AddCheckpoint(stateObject);
         }
 
 
         public static Guid AddGraphUpdate<T>(this GraphOrchestrationState<T> orchState, Guid graphExecutionId, T stateObject)
         {
-
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
-            return graphRun.AddGraphUpdate(stateObject);
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
+            return graphRun.AddGraphUpdate(stateObject);//TODO:HERE
         }
 
         public static void AddGraphStarted<T>(this GraphOrchestrationState<T> orchState, ExecutableGraphRequest<T> graphRequest)
         {
             var graphExecutionId = graphRequest.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             graphRun.AddGraphStarted(graphRequest);
         }
 
         public static void AddGraphComplete<T>(this GraphOrchestrationState<T> orchState, ExecutableGraphResult<T> graphResult)
         {
             var graphExecutionId = graphResult.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             graphRun.AddGraphComplete(graphResult);
         }
 
         public static void AddNodeStarted<T>(this GraphOrchestrationState<T> orchState, GraphNodeRequest<T> graphNodeRequest)
         {
             var graphExecutionId = graphNodeRequest.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             graphRun.AddNodeStarted(graphNodeRequest);
         }
 
@@ -289,21 +297,21 @@ namespace GraphFlow.models
         public static Guid AddNodeComplete<T>(this GraphOrchestrationState<T> orchState, GraphNodeResult<T> nodeResult)
         {
             var graphExecutionId = nodeResult.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             return graphRun.AddNodeComplete(nodeResult);
         }
 
         public static void AddEdgeStarted<T>(this GraphOrchestrationState<T> orchState, GraphEdgeRequest<T> edgeEvalRequest)
         {
             var graphExecutionId = edgeEvalRequest.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             graphRun.AddEdgeStarted(edgeEvalRequest);
         }
 
         public static void AddEdgeCompleted<T>(this GraphOrchestrationState<T> orchState, GraphEdgeResult<T> edgeCompleted)
         {
             var graphExecutionId = edgeCompleted.GraphExecutionId;
-            var graphRun = orchState.GetValueOrDefault(graphExecutionId);//TODO: throw here or null check?
+            var graphRun = orchState.GetValueOrCreateDefault(graphExecutionId);//TODO: throw here or null check?
             graphRun.AddEdgeCompleted(edgeCompleted);
         }
     }

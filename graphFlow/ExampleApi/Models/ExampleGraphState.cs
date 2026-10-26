@@ -3,7 +3,7 @@ using GraphFlow.flow;
 
 namespace ExampleApi.Models
 {
-    public class ExampleGraphStateObject: IDefaultValueHaver<ExampleGraphStateObject>
+    public class ExampleGraphStateObject
     {
         public Dictionary<string, string> NodeOutputs { get; set; }
         public int NodeCount { get; set; }

@@ -34,7 +34,7 @@ namespace GraphFlow.models
             return ExecuteGraph(execution);
         }
 
-        public GraphExecutionData<T> ExecuteGraph(Guid? executionGuid = null)
+        private GraphExecutionData<T> ExecuteGraph(Guid? executionGuid = null)
         {
             GraphNode<T>? initialNode = this.startNode;
             if (initialNode == null)
@@ -45,7 +45,7 @@ namespace GraphFlow.models
             {
                 executionGuid = Guid.NewGuid();
             }
-            _flowState.ResolveAction(Actions.GraphExecution(this));
+            _flowState.ResolveAction(Actions.GraphExecution(this, executionGuid));
             T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.SelectByExecution((Guid)executionGuid));
             GraphRunState<T> graphState = _graphStateData.CurrentState(GraphStateSelectors<T>.SelectByExecution((Guid)executionGuid));
             GraphExecutionData<T> graphRun = new GraphExecutionData<T>()
