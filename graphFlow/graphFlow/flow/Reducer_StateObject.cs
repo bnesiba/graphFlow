@@ -3,33 +3,31 @@ using GraphFlow.models;
 
 namespace GraphFlow.flow
 {
-    public class StateObjectReducer<T> : IFlowStateReducer<T> where T : IDefaultValueHaver<T>
+    public class StateObjectReducer<T> : IFlowStateReducer<GraphFlowState<T>>
     {
-        public T InitialState => T.DefaultValue();
+        public GraphFlowState<T> InitialState => new GraphFlowState<T>();
 
-        public List<IFlowReductionBase<T>> Reductions => new List<IFlowReductionBase<T>>
+        public List<IFlowReductionBase<GraphFlowState<T>>> Reductions => new List<IFlowReductionBase<GraphFlowState<T>>>
         {
             this.reduce(StateObject_OnNodeComplete_UpdateStateObject, Actions.NodeExecuted<T>()),
             this.reduce(StateObject_OnUpdateFlowState_UpdateStateObject, Actions.UpdateFlowState<T>())
         };
 
         //reducer methods
-        public T StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<T> updateAction, T currentState)
+        public GraphFlowState<T> StateObject_OnUpdateFlowState_UpdateStateObject(FlowAction<StateUpdateRequest<T>> updateAction, GraphFlowState<T> currentState)
         {
             var updatedValue = updateAction.Parameters;
-            currentState = updatedValue;
+            Guid graphExecutionId = updatedValue.GraphExecutionId;
+            currentState[graphExecutionId] = updatedValue.NewState;
             return currentState;
         }
-        public T StateObject_OnNodeComplete_UpdateStateObject(FlowAction<GraphNodeResult<T>> nodeExecutedAction, T currentState)
+        public GraphFlowState<T> StateObject_OnNodeComplete_UpdateStateObject(FlowAction<GraphNodeResult<T>> nodeExecutedAction, GraphFlowState<T> currentState)
         {
             var stateObj = nodeExecutedAction.Parameters.NodeOutput;
-            currentState = stateObj;
+            Guid graphExecutionId = nodeExecutedAction.Parameters.GraphExecutionId;
+
+            currentState[graphExecutionId] = stateObj;
             return currentState;
         }
-    }
-
-    public interface IDefaultValueHaver<T> where T : IDefaultValueHaver<T>
-    {
-        static abstract T DefaultValue();
     }
 }

@@ -6,10 +6,10 @@ namespace GraphFlow.flow
 {
     public class GraphFlowEffects<T> : IFlowStateEffects
     {
-        private FlowStateData<T> _flowStateData;
+        private FlowStateData<GraphFlowState<T>> _flowStateData;
         private FlowActionHandler _flowActionHandler;
 
-        public GraphFlowEffects(FlowActionHandler flowActionHandler, FlowStateData<T> stateData)
+        public GraphFlowEffects(FlowActionHandler flowActionHandler, FlowStateData<GraphFlowState<T>> stateData)
         {
             _flowActionHandler = flowActionHandler;
             _flowStateData = stateData;
@@ -33,16 +33,16 @@ namespace GraphFlow.flow
             GraphNode<T> nodeToExecute = executingGraph.startNode;
             try
             {
-                _flowActionHandler.ResolveAction(Actions.NodeExecution(nodeToExecute));
+                _flowActionHandler.ResolveAction(Actions.NodeExecution(nodeToExecute, executionId));
                 success = true;
 
             }
             catch (Exception ex)
             {
-                //TODO: log or include error or both
+                //TODO: log and include error
                 success = false;
             }
-            T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
+            T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.SelectByExecution(executionId));
             ExecutableGraphResult<T> graphResult = new ExecutableGraphResult<T>
             {
                 GraphExecutionId = executionId,
@@ -59,12 +59,13 @@ namespace GraphFlow.flow
         {
             GraphNode<T> nodeToExecute = executeNodeAction.Parameters.NodeExecuting;
             var executionId = executeNodeAction.Parameters.ExecutionId;
+            Guid graphExecutionId = executeNodeAction.Parameters.GraphExecutionId;
             bool success = false;
             T? nodeResult = default;
             try
             {
                 //get state data
-                T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
+                T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.SelectByExecution(graphExecutionId));
                 nodeResult = nodeToExecute.nodeFunction(stateData);
                 success = true;
             }
@@ -75,6 +76,7 @@ namespace GraphFlow.flow
             }
             GraphNodeResult<T> result = new GraphNodeResult<T> 
             { 
+                GraphExecutionId = graphExecutionId,
                 ExecutionId = executionId, 
                 NodeExecuted = nodeToExecute, 
                 Success = success 
@@ -90,8 +92,6 @@ namespace GraphFlow.flow
 
         public FlowActionBase OnNodeExecuted_IfEdges_ResolveEdgeEvaluation(FlowAction<GraphNodeResult<T>> nodeExecutedAction)
         {
-            var subtreeCompleteAction = Actions.NodeSubtreeComplete(nodeExecutedAction.Parameters);
-
             //If node failed, don't run edges/futher nodes
             if (!nodeExecutedAction.Parameters.Success)
             {
@@ -99,11 +99,12 @@ namespace GraphFlow.flow
             }
 
             var nodeCompleted = nodeExecutedAction.Parameters.NodeExecuted;
+            Guid graphExecutionId = nodeExecutedAction.Parameters.GraphExecutionId;
             //evaluate edges
             var edgesToEvaluate = nodeCompleted.edges;
             if(edgesToEvaluate.Count > 0)
             {
-                return Actions.EdgeEvaluation(edgesToEvaluate[0], nodeCompleted);
+                return Actions.EdgeEvaluation(edgesToEvaluate[0], nodeCompleted, graphExecutionId: graphExecutionId );
             }
             else
             {
@@ -115,11 +116,13 @@ namespace GraphFlow.flow
         {
             GraphEdge<T> edge = edgeEvaluationAction.Parameters.EdgeExecuting;
             var edgeExecutionId = edgeEvaluationAction.Parameters.ExecutionId;
-            T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
+            Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
+            T stateData = _flowStateData.CurrentState(StateObjectSelectors<T>.SelectByExecution(graphExecutionId));
             bool evalResult = edge.evaluation(stateData);
 
             var edgeResult = new GraphEdgeResult<T>
             {
+                GraphExecutionId = graphExecutionId,
                 ExecutionId = edgeExecutionId,
                 EdgeIndex = edgeEvaluationAction.Parameters.EdgeIndex,
                 SourceNode = edgeEvaluationAction.Parameters.SourceNode,
@@ -137,7 +140,7 @@ namespace GraphFlow.flow
             var edgeResult = edgeEvaluationAction.Parameters;
             if (edgeResult.ShouldContinue)
             {
-                return Actions.NodeExecution(edgeResult.EdgeExecuted.targetNode);
+                return Actions.NodeExecution(edgeResult.EdgeExecuted.targetNode, edgeResult.GraphExecutionId);
             }
             else
             {
@@ -150,10 +153,11 @@ namespace GraphFlow.flow
             var edgeResult = edgeEvaluationAction.Parameters;
             var sourceNode = edgeEvaluationAction.Parameters.SourceNode;
             var newIndex = edgeEvaluationAction.Parameters.EdgeIndex + 1;
+            Guid graphExecutionId = edgeEvaluationAction.Parameters.GraphExecutionId;
             if(edgeResult.SourceNode.edges.Count > newIndex)
             {
                 var newEdge = edgeResult.SourceNode.edges[newIndex];
-                return Actions.EdgeEvaluation(newEdge, sourceNode, newIndex);
+                return Actions.EdgeEvaluation(newEdge, sourceNode, newIndex, graphExecutionId);
             }
             else
             {

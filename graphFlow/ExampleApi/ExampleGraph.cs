@@ -29,7 +29,7 @@ namespace ExampleApi
     //    "Node3": "MadeItToNode3"
     //  },
     //  "nodeCount": 7,
-    //  "shouldDoTheThing": false
+    //  "shouldDoTheThing": true
     //}
 
     public class ExampleGraph

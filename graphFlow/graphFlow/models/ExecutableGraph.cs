@@ -8,14 +8,14 @@ namespace GraphFlow.models
     public class ExecutableGraph<T> : ExecutableGraphBase
     {
         private FlowState _flowState;
-        private FlowStateData<T> _flowStateData;
-        private FlowStateData<GraphRunState<T>> _graphStateData;
+        private FlowStateData<GraphFlowState<T>> _flowStateData;
+        private FlowStateData<GraphOrchestrationState<T>> _graphStateData;
         private PersistenceManager<T> _persistenceManager;
         public Dictionary<string, GraphNode<T>> graphNodes { get; set; }
         public List<GraphEdge<T>> graphEdges { get; set; }
         public GraphNode<T>? startNode { get; set; }
 
-        public ExecutableGraph(FlowState flowState, FlowStateData<T> flowStateData,FlowStateData<GraphRunState<T>> graphStateData, PersistenceManager<T> persistence):base()
+        public ExecutableGraph(FlowState flowState, FlowStateData<GraphFlowState<T>> flowStateData,FlowStateData<GraphOrchestrationState<T>> graphStateData, PersistenceManager<T> persistence):base()
         {
             _flowState = flowState;
             _flowStateData = flowStateData;
@@ -28,20 +28,26 @@ namespace GraphFlow.models
 
         public GraphExecutionData<T> ExecuteGraph(T graphInput)
         {
-            _flowState.ResolveAction(Actions.UpdateFlowState(graphInput));
-            return ExecuteGraph();
+            Guid execution = Guid.NewGuid();
+            var updateObj = new StateUpdateRequest<T>{ GraphExecutionId = execution, NewState = graphInput };
+            _flowState.ResolveAction(Actions.UpdateFlowState(updateObj));
+            return ExecuteGraph(execution);
         }
 
-        public GraphExecutionData<T> ExecuteGraph()
+        private GraphExecutionData<T> ExecuteGraph(Guid? executionGuid = null)
         {
             GraphNode<T>? initialNode = this.startNode;
             if (initialNode == null)
             {
                 throw new ArgumentException("Start node must exist to execute graph");
             }
-            _flowState.ResolveAction(Actions.GraphExecution(this));
-            T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.GetStateData);
-            GraphRunState<T> graphState = _graphStateData.CurrentState(GraphFlowSelectors<T>.GetGraphState);
+            if(executionGuid == null)
+            {
+                executionGuid = Guid.NewGuid();
+            }
+            _flowState.ResolveAction(Actions.GraphExecution(this, executionGuid));
+            T currentState = _flowStateData.CurrentState(StateObjectSelectors<T>.SelectByExecution((Guid)executionGuid));
+            GraphRunState<T> graphState = _graphStateData.CurrentState(GraphStateSelectors<T>.SelectByExecution((Guid)executionGuid));
             GraphExecutionData<T> graphRun = new GraphExecutionData<T>()
             {
                 GraphData = graphState,
@@ -123,15 +129,13 @@ namespace GraphFlow.models
             return true;
         }
     }
-    public class ExecutableGraphRequest<T>
+    public class ExecutableGraphRequest<T> : GraphOrchestrationObject
     {
-        public Guid GraphExecutionId { get; set; }
         public ExecutableGraph<T> ExecutingGraph { get; set; }
     }
 
-    public class ExecutableGraphResult<T>
+    public class ExecutableGraphResult<T> : GraphOrchestrationObject
     {
-        public Guid GraphExecutionId { get; set;}
         public ExecutableGraph<T> GraphExecuted { get; set; }
         public T GraphOutput { get; set; }
         public bool Success { get; set; }

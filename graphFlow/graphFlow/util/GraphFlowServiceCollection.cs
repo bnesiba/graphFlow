@@ -12,12 +12,12 @@ namespace GraphFlow.util
     public static class GraphFlowServiceCollection
     {
         public static IServiceCollection UseGraphFlow<T>(this IServiceCollection services)
-            where T : class, IDefaultValueHaver<T>
+            where T : class
         {
             services.UseFlowState();
             services.UseEffects<GraphFlowEffects<T>>();
-            services.UseReducer<StateObjectReducer<T>, T>();
-            services.UseReducer<GraphRunStateReducer<T>, GraphRunState<T>>();
+            services.UseReducer<StateObjectReducer<T>, GraphFlowState<T>>();
+            services.UseReducer<GraphRunStateReducer<T>, GraphOrchestrationState<T>>();
             services.AddSingleton<IGraphFlowPersistence<T>, NotImplementedFlowPersistence<T>>();
             services.AddScoped<GraphBuilder<T>>();
             services.AddScoped<PersistenceManager<T>>();

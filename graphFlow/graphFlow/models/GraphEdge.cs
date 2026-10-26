@@ -17,7 +17,7 @@ namespace GraphFlow.models
         public string name { get; set; }
     }
 
-    public class GraphEdgeResult<T>
+    public class GraphEdgeResult<T> : GraphOrchestrationObject
     {
         public Guid ExecutionId { get; set; }
         public int EdgeIndex { get; set; }
@@ -29,7 +29,7 @@ namespace GraphFlow.models
         
     }
 
-    public class GraphEdgeRequest<T>
+    public class GraphEdgeRequest<T> : GraphOrchestrationObject
     {
         public GraphNode<T> SourceNode { get; set; }
         public int EdgeIndex { get; set; }

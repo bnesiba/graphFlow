@@ -11,13 +11,12 @@ using System.Threading.Tasks;
 
 namespace GraphFlow.persistence
 {
-    //TODO: !Important! Update to handle new state object.
     public class GraphPersistenceEffects<T> : IFlowStateEffects
     {
-        private FlowStateData<T> _stateObjectData;
-        private FlowStateData<GraphRunState<T>> _graphStateData;
+        private FlowStateData<GraphFlowState<T>> _stateObjectData;
+        private FlowStateData<GraphOrchestrationState<T>> _graphStateData;
         IGraphFlowPersistence<T> flowPersistence;
-        public GraphPersistenceEffects(FlowStateData<T> stateObjData, FlowStateData<GraphRunState<T>> graphData, IGraphFlowPersistence<T> persistence) 
+        public GraphPersistenceEffects(FlowStateData<GraphFlowState<T>> stateObjData, FlowStateData<GraphOrchestrationState<T>> graphData, IGraphFlowPersistence<T> persistence) 
         {
             _stateObjectData = stateObjData;
             _graphStateData = graphData;
@@ -33,12 +32,13 @@ namespace GraphFlow.persistence
         //TODO: fix for new models and stuff
         public FlowActionBase OnGraphExecuted_PersistResults_ResolveResultsPersisted(FlowAction<ExecutableGraphResult<T>> graphExecuted)
         {
-            var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.GetStateData);
-            var graphStateSnapshot = _graphStateData.CurrentState(StateObjectSelectors<GraphRunState<T>>.GetStateData);//TODO: get correctly
+            Guid graphExecutionId = graphExecuted.Parameters.GraphExecutionId;
+            var stateObjectSnapshot = _stateObjectData.CurrentState(StateObjectSelectors<T>.SelectByExecution(graphExecutionId));
+            var graphStateSnapshot = _graphStateData.CurrentState(GraphStateSelectors<T>.SelectByExecution(graphExecutionId));
             GraphExecutionData<T> record = new GraphExecutionData<T>
             {
                 StateObject = stateObjectSnapshot,
-                GraphData = null,//TODO: can't be null?
+                GraphData = null,//TODO: null?
             };
             flowPersistence.StoreGraphSnapshot(record);
             return Actions.RunPersisted(record);
