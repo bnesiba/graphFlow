@@ -1,5 +1,6 @@
 ﻿using ExampleApi.Models;
 using GraphFlow.models;
+using GraphFlow.persistence.models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Concurrent;
@@ -56,6 +57,30 @@ namespace ExampleApi.Controllers
             });
 
             return StatusCode(200, resultValues);
+        }
+
+        [HttpGet("testWithStreaming")]
+        public virtual IActionResult RunTestWithStreaming()
+        {
+            var graph = _exampleGraph.GetGraph();
+            var startingValue = ExampleGraphStateObject.DefaultValue();
+            startingValue.ShouldDoTheThing = true;
+            List<string> checkpoints = new List<string>();
+
+            var result = graph.StreamGraph(startingValue, (graphProgress) =>
+            {
+                var checkpoint = graphProgress.GraphRunState.CurrentCheckpoint;
+                checkpoints.Add(graphProgress.GraphObjectName + " " + checkpoint.ToString());
+            });
+
+            var output = new StreamTestExampleObject { StreamedCheckpoints = checkpoints, GraphData = result, };
+            return StatusCode(200, output);
+        }
+
+        public class StreamTestExampleObject
+        {
+            public List<string> StreamedCheckpoints { get; set; }
+            public GraphExecutionData<ExampleGraphStateObject> GraphData { get; set; }
         }
     }
 
