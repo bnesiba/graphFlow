@@ -27,7 +27,6 @@ namespace GraphFlow.models
     {
         public Guid Id { get; init; }
         public Guid ThreadId { get; init; }//TODO: remove?
-        public Guid GraphExecutionId { get; set; } = Guid.Empty;
         public Dictionary<Guid, GraphRun> GraphRuns { get; set; }
         public Dictionary<Guid, NodeRun> NodeRuns { get; set; }
         public Dictionary<Guid, EdgeRun> EdgeRuns { get; set; }
